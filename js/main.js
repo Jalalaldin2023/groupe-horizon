@@ -40,10 +40,11 @@ document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 const form = document.getElementById('contactForm');
 const success = document.getElementById('formSuccess');
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  // Pas de serveur branché : on confirme la prise en compte côté client.
-  success.classList.add('visible');
-  form.reset();
-  setTimeout(() => success.classList.remove('visible'), 6000);
-});
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    success.classList.add('visible');
+    form.reset();
+    setTimeout(() => success.classList.remove('visible'), 6000);
+  });
+}

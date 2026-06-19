@@ -21,6 +21,7 @@
     applyImages(page);
     applyPresPhotos(page);
     applyContact();
+    applyLogo();
   });
 
   /* ─── ACCUEIL ─── */
@@ -153,8 +154,18 @@
 
   /* ─── CONTACT ─── */
   function applyContact() {
-    if (d.global_phone) qa('[data-admin-phone]').forEach(el=>el.textContent=d.global_phone);
-    if (d.global_email) qa('[data-admin-email]').forEach(el=>el.textContent=d.global_email);
+    if (d.global_phone)   qa('[data-admin-phone]').forEach(el=>el.textContent=d.global_phone);
+    if (d.global_email)   qa('[data-admin-email]').forEach(el=>el.textContent=d.global_email);
+    if (d.global_address) qa('[data-admin-address]').forEach(el=>el.textContent=d.global_address);
+    if (d.global_hours)   qa('[data-admin-hours]').forEach(el=>el.textContent=d.global_hours);
+  }
+
+  /* ─── LOGO ─── */
+  function applyLogo() {
+    const src = localStorage.getItem('horizonImg_global_logo');
+    if (!src) return;
+    qa('.logo-img').forEach(img => { img.src = src; img.style.display = 'block'; });
+    qa('.logo-text').forEach(el  => { el.style.display = 'none'; });
   }
 
   /* ─── HELPERS ─── */

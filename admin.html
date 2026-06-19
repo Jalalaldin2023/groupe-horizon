@@ -444,6 +444,28 @@
       <!-- THEME -->
       <div id="panel-theme" class="panel">
         <div class="form-section">
+          <div class="section-head"><span></span><span class="section-head-title">Logo de l'entreprise</span></div>
+          <div class="section-body">
+            <div class="info-box">Importez votre logo — il remplacera le texte "Groupe Horizon" dans le header et le footer de toutes les pages. Format recommandé : PNG fond transparent, hauteur 80-120 px. Taille max : 3 Mo.</div>
+            <div style="display:grid;grid-template-columns:220px 1fr;gap:1.5rem;align-items:start;margin-top:1rem">
+              <div class="upload-slot" data-img-key="global_logo">
+                <div class="upload-zone" id="uz-global-logo" style="aspect-ratio:3/1">
+                  <img class="uz-preview" alt="">
+                  <div class="uz-empty">
+                    <div class="uz-icon" style="font-size:1.4rem">LOGO</div>
+                    <p>Votre logo<br>ou <strong>cliquer</strong></p>
+                  </div>
+                  <input type="file" class="uz-input" accept="image/*">
+                  <button class="uz-delete">Suppr.</button>
+                </div>
+              </div>
+              <div style="padding:.25rem 0">
+                <p style="font-size:.85rem;color:var(--gray-500);line-height:1.6">Si aucun logo n'est importé, le logo texte par défaut est affiché.<br>Formats acceptés : JPG, PNG, SVG, WebP.<br>Le logo s'affiche dans le header et le footer de toutes les pages.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
           <div class="section-head"><span></span><span class="section-head-title">Couleurs du site</span></div>
           <div class="section-body">
             <div class="fg row2">
