@@ -115,10 +115,48 @@
       setIn(c,'.actu-desc', d[p+'_a'+n+'_desc']);
     });
 
+    /* Catalogue */
+    applyCatalogue(p);
+
     /* CTA */
     setText('.contact-cta h2', d[p+'_cta_h2']);
     setNth ('.contact-cta p',0, d[p+'_cta_p']);
     setText('.contact-cta .btn',d[p+'_cta_btn']);
+  }
+
+  /* ─── CATALOGUE ─── */
+  function applyCatalogue(p) {
+    const count = parseInt(d[p+'_cat_count'] || '0');
+    const section = document.querySelector('.catalogue-section');
+    if (!section || count === 0) return;
+
+    section.style.display = '';
+    if (d[p+'_cat_tag']) { const el=section.querySelector('.catalogue-tag');   if(el) el.textContent=d[p+'_cat_tag']; }
+    if (d[p+'_cat_h2'])  { const el=section.querySelector('.catalogue-title'); if(el) el.textContent=d[p+'_cat_h2']; }
+
+    const grid = section.querySelector('.catalogue-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    for (let n = 1; n <= count; n++) {
+      const name  = d[p+'_cat_'+n+'_name']  || '';
+      const desc  = d[p+'_cat_'+n+'_desc']  || '';
+      const price = d[p+'_cat_'+n+'_price'] || '';
+      const btn   = d[p+'_cat_'+n+'_btn']   || 'Commander';
+      if (!name) continue;
+      const imgSrc = localStorage.getItem(IMG_PFX + p + '_cat_' + n);
+      const item = document.createElement('div');
+      item.className = 'cat-item';
+      item.innerHTML = '<div class="cat-img-wrap">'
+        + (imgSrc ? '<img src="'+imgSrc+'" alt="'+name+'">'
+                  : '<div class="cat-img-placeholder">Photo</div>')
+        + '</div><div class="cat-body">'
+        + '<div class="cat-name">'+name+'</div>'
+        + '<div class="cat-desc">'+desc+'</div>'
+        + (price ? '<div class="cat-price">'+price+'</div>' : '')
+        + '<a href="#contact" class="btn-sm">'+btn+'</a>'
+        + '</div>';
+      grid.appendChild(item);
+    }
   }
 
   /* ─── IMAGES GALERIE ─── */

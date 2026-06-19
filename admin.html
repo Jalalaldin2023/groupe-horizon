@@ -293,6 +293,17 @@
     }
     .upload-zone.has-img .uz-label { display: block; }
 
+    /* Catalogue editor */
+    .cat-editor { display: flex; flex-direction: column; gap: 1rem; }
+    .cat-item-ed { border: 1.5px solid var(--gray-200); border-radius: 12px; overflow: hidden; background: var(--gray-50); }
+    .cat-item-ed-hd { display: flex; align-items: center; justify-content: space-between; padding: .55rem 1rem; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); font-size: .7rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px; }
+    .cat-item-ed-body { display: grid; grid-template-columns: 180px 1fr; gap: 1rem; padding: 1rem; }
+    .cat-item-ed-fields { display: flex; flex-direction: column; gap: .4rem; }
+    .cat-item-ed-fields .fg { gap: .2rem; margin: 0; }
+    .cat-item-ed-fields label { font-size: .76rem; }
+    .cat-item-ed-fields .fi, .cat-item-ed-fields textarea.fi { padding: .48rem .7rem; font-size: .83rem; }
+    .cat-item-ed-fields textarea.fi { min-height: 52px; }
+
     /* News cards editor */
     .news-editor { display: flex; flex-direction: column; gap: 1rem; }
     .news-card-ed {
@@ -755,6 +766,7 @@ function showAdmin() {
   buildDashboard();
   buildAllPagePanels();
   initShopEditors();
+  initCatEditors();
   loadAllFields();
   initAllPhotoUploads();
   updateThemePreview();
@@ -859,12 +871,13 @@ function buildAllPagePanels() {
 function buildPagePanel(m) {
   const p = m.id;
   const tabs = [
-    { key:'entete', label:'En-tête' },
-    { key:'boutique', label:'Boutique' },
-    { key:'pres', label:'Présentation' },
-    { key:'galerie', label:'Galerie' },
-    { key:'actu', label:'Actualités' },
-    { key:'cta', label:'CTA' },
+    { key:'entete',    label:'En-tête' },
+    { key:'boutique',  label:'Boutique' },
+    { key:'catalogue', label:'Catalogue' },
+    { key:'pres',      label:'Présentation' },
+    { key:'galerie',   label:'Galerie' },
+    { key:'actu',      label:'Actualités' },
+    { key:'cta',       label:'CTA' },
   ];
   return `
     <div class="tabs-nav">
@@ -925,6 +938,23 @@ function buildPagePanel(m) {
           <div class="cards-editor" id="${p}-cards-editor"></div>
           <div class="add-card-row">
             <button class="btn-add-card" onclick="addShopCard('${p}')">＋ Ajouter une carte</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATALOGUE -->
+    <div id="${p}-catalogue" class="tab-pane">
+      <div class="form-section">
+        <div class="section-head"><span></span><span class="section-head-title">Catalogue de produits</span><span id="${p}-cat-badge" class="badge-pill">0 articles</span></div>
+        <div class="section-body">
+          <div class="fg row2">
+            <div><label>Tag de section</label><input class="fi" id="${p}_cat_tag" placeholder="Catalogue"></div>
+            <div><label>Titre (h2)</label><input class="fi" id="${p}_cat_h2" placeholder="Nos produits"></div>
+          </div>
+          <div class="cat-editor" id="${p}-cat-editor"></div>
+          <div class="add-card-row">
+            <button class="btn-add-card" onclick="addCatItem('${p}')">＋ Ajouter un article</button>
           </div>
         </div>
       </div>
@@ -1069,6 +1099,109 @@ function buildPagePanel(m) {
 }
 
 /* =====================================================
+   DYNAMIC CATALOGUE EDITOR
+===================================================== */
+function initCatEditors() {
+  PAGE_META.forEach(meta => initCatEditor(meta.id));
+}
+
+function initCatEditor(page) {
+  const d = getData();
+  const count = parseInt(d[page + '_cat_count'] || '0');
+  const container = document.getElementById(page + '-cat-editor');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 1; i <= count; i++) container.insertAdjacentHTML('beforeend', makeCatItemHTML(page, i, d));
+  updateCatBadge(page);
+}
+
+function makeCatItemHTML(page, n, d) {
+  const v = k => (d && d[`${page}_cat_${n}_${k}`]) || '';
+  const stored = localStorage.getItem(IMG_PFX + `${page}_cat_${n}`);
+  const previewStyle = stored ? 'display:block' : 'display:none';
+  const emptyStyle  = stored ? 'display:none'  : 'display:flex';
+  return `<div class="cat-item-ed" id="cat-item-ed-${page}-${n}">
+    <div class="cat-item-ed-hd">Article ${n}
+      <button type="button" class="btn-del-card" onclick="removeCatItem('${page}',${n})">✕ Suppr.</button>
+    </div>
+    <div class="cat-item-ed-body">
+      <div class="upload-slot" data-img-key="${page}_cat_${n}">
+        <div class="upload-zone" id="uz-${page}-cat-${n}">
+          <img class="uz-preview" alt="" style="${previewStyle}" ${stored ? `src="${stored}"` : ''}>
+          <div class="uz-empty" style="${emptyStyle}"><div class="uz-icon" style="font-size:1.5rem">&#128247;</div><p>Photo<br>ou <strong>cliquer</strong></p></div>
+          <input type="file" class="uz-input" accept="image/*">
+          <button class="uz-delete" style="${stored ? 'display:flex' : 'display:none'}">Suppr.</button>
+        </div>
+      </div>
+      <div class="cat-item-ed-fields">
+        <div class="fg"><label>Nom du produit</label><input class="fi" id="${page}_cat_${n}_name" value="${v('name')}" placeholder="Nom du produit"></div>
+        <div class="fg"><label>Description</label><textarea class="fi" id="${page}_cat_${n}_desc" placeholder="Description...">${v('desc')}</textarea></div>
+        <div class="fg row2">
+          <div><label>Prix</label><input class="fi" id="${page}_cat_${n}_price" value="${v('price')}" placeholder="25 000 FCFA"></div>
+          <div><label>Bouton</label><input class="fi" id="${page}_cat_${n}_btn" value="${v('btn')}" placeholder="Commander"></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function updateCatBadge(page) {
+  const container = document.getElementById(page + '-cat-editor');
+  const badge     = document.getElementById(page + '-cat-badge');
+  if (!container || !badge) return;
+  const n = container.querySelectorAll('.cat-item-ed').length;
+  badge.textContent = n + (n > 1 ? ' articles' : ' article');
+}
+
+function addCatItem(page) {
+  const container = document.getElementById(page + '-cat-editor');
+  if (!container) return;
+  const n = container.querySelectorAll('.cat-item-ed').length + 1;
+  container.insertAdjacentHTML('beforeend', makeCatItemHTML(page, n, getData()));
+  // Wire new upload slot
+  const slot = container.lastElementChild.querySelector('.upload-slot');
+  if (slot) initOneUploadSlot(slot);
+  updateCatBadge(page);
+  container.lastElementChild.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function removeCatItem(page, n) {
+  const container = document.getElementById(page + '-cat-editor');
+  if (!container) return;
+  if (container.querySelectorAll('.cat-item-ed').length <= 1) {
+    toast('Il faut garder au moins un article.', 'error'); return;
+  }
+  const allItems = Array.from(container.querySelectorAll('.cat-item-ed')).map((el, idx) => {
+    const i = idx + 1;
+    const get = k => document.getElementById(`${page}_cat_${i}_${k}`)?.value || '';
+    return { name: get('name'), desc: get('desc'), price: get('price'), btn: get('btn'),
+             img: localStorage.getItem(IMG_PFX + `${page}_cat_${i}`) };
+  });
+  allItems.splice(n - 1, 1);
+
+  const d = getData();
+  const maxN = allItems.length + 1;
+  for (let i = 1; i <= maxN; i++) {
+    ['name','desc','price','btn'].forEach(k => delete d[`${page}_cat_${i}_${k}`]);
+    localStorage.removeItem(IMG_PFX + `${page}_cat_${i}`);
+  }
+  d[page + '_cat_count'] = String(allItems.length);
+  allItems.forEach((c, idx) => {
+    const i = idx + 1;
+    if (c.name)  d[`${page}_cat_${i}_name`]  = c.name;
+    if (c.desc)  d[`${page}_cat_${i}_desc`]  = c.desc;
+    if (c.price) d[`${page}_cat_${i}_price`] = c.price;
+    if (c.btn)   d[`${page}_cat_${i}_btn`]   = c.btn;
+    if (c.img)   localStorage.setItem(IMG_PFX + `${page}_cat_${i}`, c.img);
+  });
+  localStorage.setItem(DATA_KEY, JSON.stringify(d));
+  initCatEditor(page);
+  // Re-wire all upload slots in this editor
+  container.querySelectorAll('.upload-slot').forEach(slot => initOneUploadSlot(slot));
+  toast('Article supprimé.', 'success');
+}
+
+/* =====================================================
    DYNAMIC SHOP EDITOR
 ===================================================== */
 function initShopEditors() {
@@ -1158,46 +1291,36 @@ function removeShopCard(page, n) {
    PHOTO UPLOAD
 ===================================================== */
 function initAllPhotoUploads() {
-  document.querySelectorAll('.upload-slot').forEach(slot =>{
-    const imgKey = slot.dataset.imgKey;
-    const zone = slot.querySelector('.upload-zone');
-    const input = slot.querySelector('.uz-input');
-    const del = slot.querySelector('.uz-delete');
-    if (!zone || !imgKey) return;
+  document.querySelectorAll('.upload-slot').forEach(slot => initOneUploadSlot(slot));
+}
 
-    // Load existing image
-    const stored = localStorage.getItem(IMG_PFX + imgKey);
-    if (stored) uzShow(zone, stored);
+function initOneUploadSlot(slot) {
+  if (slot.dataset.wired) return;
+  slot.dataset.wired = '1';
+  const imgKey = slot.dataset.imgKey;
+  const zone   = slot.querySelector('.upload-zone');
+  const input  = slot.querySelector('.uz-input');
+  const del    = slot.querySelector('.uz-delete');
+  if (!zone || !imgKey) return;
 
-    // Click on zone → open file picker
-    zone.addEventListener('click', e =>{
-      if (del.contains(e.target)) return;
-      input.click();
-    });
+  const stored = localStorage.getItem(IMG_PFX + imgKey);
+  if (stored) uzShow(zone, stored);
 
-    // File selected via picker
-    input.addEventListener('change', () =>{
-      if (input.files[0]) processPhoto(input.files[0], imgKey, zone);
-    });
-
-    // Drag events
-    zone.addEventListener('dragover', e =>{ e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', () =>zone.classList.remove('drag-over'));
-    zone.addEventListener('drop', e =>{
-      e.preventDefault();
-      zone.classList.remove('drag-over');
-      const f = e.dataTransfer.files[0];
-      if (f && f.type.startsWith('image/')) processPhoto(f, imgKey, zone);
-    });
-
-    // Delete
-    del.addEventListener('click', e =>{
-      e.stopPropagation();
-      localStorage.removeItem(IMG_PFX + imgKey);
-      input.value = '';
-      uzHide(zone);
-      toast('Photo supprimée.', 'success');
-    });
+  zone.addEventListener('click', e =>{ if (del.contains(e.target)) return; input.click(); });
+  input.addEventListener('change', () =>{ if (input.files[0]) processPhoto(input.files[0], imgKey, zone); });
+  zone.addEventListener('dragover', e =>{ e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e =>{
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) processPhoto(f, imgKey, zone);
+  });
+  del.addEventListener('click', e =>{
+    e.stopPropagation();
+    localStorage.removeItem(IMG_PFX + imgKey);
+    input.value = '';
+    uzHide(zone);
+    toast('Photo supprimée.', 'success');
   });
 }
 
@@ -1256,9 +1379,10 @@ function savePageSection(page) {
   });
   // Save dynamic shop card count
   const shopContainer = document.getElementById(page + '-cards-editor');
-  if (shopContainer) {
-    updates[page + '_shop_count'] = String(shopContainer.querySelectorAll('.card-ed').length);
-  }
+  if (shopContainer) updates[page + '_shop_count'] = String(shopContainer.querySelectorAll('.card-ed').length);
+  // Save dynamic catalogue item count
+  const catContainer = document.getElementById(page + '-cat-editor');
+  if (catContainer) updates[page + '_cat_count'] = String(catContainer.querySelectorAll('.cat-item-ed').length);
   mergeData(updates);
   toast(`Page "${PANEL_TITLES['page_' + page] || page}" sauvegardée !`, 'success');
 }
@@ -1282,9 +1406,12 @@ function saveSection(prefix) {
 function resetPageSection(prefix) {
   if (!confirm(`Réinitialiser toute la page "${prefix}" ?\n\nTextes ET photos seront effacés. Action irréversible.`)) return;
   clearPrefix(prefix);
-  // Clear page logo + gallery + team + estab photos
+  // Clear page logo, gallery, team, estab, catalogue photos
   localStorage.removeItem(IMG_PFX + prefix + '_logo');
-  for (let i = 1; i <= 20; i++) localStorage.removeItem(IMG_PFX + prefix + '_' + i);
+  for (let i = 1; i <= 20; i++) {
+    localStorage.removeItem(IMG_PFX + prefix + '_' + i);
+    localStorage.removeItem(IMG_PFX + prefix + '_cat_' + i);
+  }
   for (let i = 1; i <= 3; i++) {
     localStorage.removeItem(IMG_PFX + prefix + '_team_' + i);
     localStorage.removeItem(IMG_PFX + prefix + '_estab_' + i);
@@ -1293,9 +1420,10 @@ function resetPageSection(prefix) {
     uzHide(slot.querySelector('.upload-zone'));
     slot.querySelector('.uz-input').value = '';
   });
-  // Rebuild shop editor with defaults
+  // Rebuild shop + catalogue editors with defaults
   const meta = PAGE_META.find(m =>m.id === prefix);
   initShopEditor(prefix, meta);
+  initCatEditor(prefix);
   loadAllFields();
   toast(`Page "${prefix}" réinitialisée.`, 'success');
 }
