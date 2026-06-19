@@ -176,11 +176,16 @@
       border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 1rem;
       background: var(--gray-50);
     }
-    .card-ed-num { font-size: .7rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: .75rem; }
+    .card-ed-num { font-size: .7rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: .75rem; display:flex; align-items:center; justify-content:space-between; }
     .card-ed .fg { gap: .25rem; margin-bottom: .5rem; }
     .card-ed label { font-size: .76rem; }
     .card-ed .fi, .card-ed textarea.fi { padding: .52rem .75rem; font-size: .83rem; }
     .card-ed textarea.fi { min-height: 55px; }
+    .btn-del-card { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.3); border-radius: 5px; padding: .18rem .5rem; font-size: .72rem; cursor: pointer; font-weight: 700; line-height: 1; transition: background .15s; }
+    .btn-del-card:hover { background: rgba(239,68,68,.25); }
+    .add-card-row { display: flex; justify-content: center; padding: 1rem 0 .25rem; }
+    .btn-add-card { background: rgba(34,197,94,.12); color: #15803d; border: 1.5px dashed #86efac; border-radius: 10px; padding: .65rem 2rem; font-family: 'Montserrat',sans-serif; font-size: .85rem; font-weight: 700; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: .4rem; }
+    .btn-add-card:hover { background: rgba(34,197,94,.22); border-color: #4ade80; }
 
     /* Actions bar */
     .actions-bar {
@@ -727,6 +732,7 @@ function showAdmin() {
   document.getElementById('admin-app').classList.add('active');
   buildDashboard();
   buildAllPagePanels();
+  initShopEditors();
   loadAllFields();
   initAllPhotoUploads();
   updateThemePreview();
@@ -868,24 +874,15 @@ function buildPagePanel(m) {
     <!-- BOUTIQUE -->
     <div id="${p}-boutique" class="tab-pane">
       <div class="form-section">
-        <div class="section-head"><span>🛒</span><span class="section-head-title">Section boutique</span><span class="badge-pill">6 cartes</span></div>
+        <div class="section-head"><span>🛒</span><span class="section-head-title">Section boutique</span><span id="${p}-cards-badge" class="badge-pill">0 cartes</span></div>
         <div class="section-body">
           <div class="fg row2">
             <div><label>Tag de section</label><input class="fi" id="${p}_shop_tag" placeholder="Boutique ${m.label}"></div>
             <div><label>Titre (h2)</label><input class="fi" id="${p}_shop_h2" placeholder="Nos offres &amp; tarifs"></div>
           </div>
-          <div class="cards-editor">
-            ${m.cardDef.map((c,i) => {
-              const n = i+1;
-              return `<div class="card-ed">
-                <div class="card-ed-num">Carte ${n}</div>
-                <div class="fg"><label>Icône (emoji)</label><input class="fi" id="${p}_c${n}_icon" placeholder="${c.icon}"></div>
-                <div class="fg"><label>Nom</label><input class="fi" id="${p}_c${n}_name" placeholder="${c.name}"></div>
-                <div class="fg"><label>Description</label><textarea class="fi" id="${p}_c${n}_desc" placeholder="${c.desc}"></textarea></div>
-                <div class="fg"><label>Prix / tarif</label><input class="fi" id="${p}_c${n}_price" placeholder="${c.price}"></div>
-                <div class="fg"><label>Texte bouton</label><input class="fi" id="${p}_c${n}_btn" placeholder="Commander"></div>
-              </div>`;
-            }).join('')}
+          <div class="cards-editor" id="${p}-cards-editor"></div>
+          <div class="add-card-row">
+            <button class="btn-add-card" onclick="addShopCard('${p}')">＋ Ajouter une carte</button>
           </div>
         </div>
       </div>
@@ -1030,6 +1027,92 @@ function buildPagePanel(m) {
 }
 
 /* =====================================================
+   DYNAMIC SHOP EDITOR
+===================================================== */
+function initShopEditors() {
+  PAGE_META.forEach(meta => initShopEditor(meta.id, meta));
+}
+
+function initShopEditor(page, meta) {
+  const d    = getData();
+  const raw  = d[page + '_shop_count'];
+  const count = raw ? parseInt(raw) : (meta ? meta.cardDef.length : 6);
+  const container = document.getElementById(page + '-cards-editor');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 1; i <= count; i++) {
+    const def = meta && meta.cardDef[i-1];
+    container.insertAdjacentHTML('beforeend', makeCardEdHTML(page, i, d, def));
+  }
+  updateCardsBadge(page);
+}
+
+function makeCardEdHTML(page, n, d, def) {
+  const v = k => (d && d[`${page}_c${n}_${k}`]) || '';
+  const ph = k => (def && def[k]) || '';
+  return `<div class="card-ed" id="card-ed-${page}-${n}">
+    <div class="card-ed-num">Carte ${n}<button type="button" class="btn-del-card" onclick="removeShopCard('${page}',${n})">✕ Suppr.</button></div>
+    <div class="fg"><label>Icone (emoji)</label><input class="fi" id="${page}_c${n}_icon" value="${v('icon')}" placeholder="${ph('icon')}"></div>
+    <div class="fg"><label>Nom</label><input class="fi" id="${page}_c${n}_name" value="${v('name')}" placeholder="${ph('name')}"></div>
+    <div class="fg"><label>Description</label><textarea class="fi" id="${page}_c${n}_desc" placeholder="${ph('desc')}">${v('desc')}</textarea></div>
+    <div class="fg"><label>Prix / tarif</label><input class="fi" id="${page}_c${n}_price" value="${v('price')}" placeholder="${ph('price')}"></div>
+    <div class="fg"><label>Texte bouton</label><input class="fi" id="${page}_c${n}_btn" value="${v('btn')}" placeholder="Commander"></div>
+  </div>`;
+}
+
+function updateCardsBadge(page) {
+  const container = document.getElementById(page + '-cards-editor');
+  const badge     = document.getElementById(page + '-cards-badge');
+  if (!container || !badge) return;
+  const n = container.querySelectorAll('.card-ed').length;
+  badge.textContent = n + (n > 1 ? ' cartes' : ' carte');
+}
+
+function addShopCard(page) {
+  const container = document.getElementById(page + '-cards-editor');
+  if (!container) return;
+  const n = container.querySelectorAll('.card-ed').length + 1;
+  container.insertAdjacentHTML('beforeend', makeCardEdHTML(page, n, {}, null));
+  updateCardsBadge(page);
+  container.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function removeShopCard(page, n) {
+  const container = document.getElementById(page + '-cards-editor');
+  if (!container) return;
+  if (container.querySelectorAll('.card-ed').length <= 1) {
+    toast('Il faut garder au moins une carte.', 'error'); return;
+  }
+
+  // Collect all current values before renumbering
+  const allCards = Array.from(container.querySelectorAll('.card-ed')).map((el, idx) => {
+    const i = idx + 1;
+    const get = k => document.getElementById(`${page}_c${i}_${k}`)?.value || '';
+    return { icon: get('icon'), name: get('name'), desc: get('desc'), price: get('price'), btn: get('btn') };
+  });
+  allCards.splice(n - 1, 1); // remove the nth card (1-based)
+
+  // Persist: clear old keys then write renumbered data
+  const d = getData();
+  Object.keys(d).filter(k => k.startsWith(`${page}_c`) && /^[a-z]+_c\d+_/.test(k)).forEach(k => delete d[k]);
+  d[page + '_shop_count'] = String(allCards.length);
+  allCards.forEach((c, idx) => {
+    const i = idx + 1;
+    if (c.icon)  d[`${page}_c${i}_icon`]  = c.icon;
+    if (c.name)  d[`${page}_c${i}_name`]  = c.name;
+    if (c.desc)  d[`${page}_c${i}_desc`]  = c.desc;
+    if (c.price) d[`${page}_c${i}_price`] = c.price;
+    if (c.btn)   d[`${page}_c${i}_btn`]   = c.btn;
+  });
+  localStorage.setItem(DATA_KEY, JSON.stringify(d));
+
+  // Rebuild editor
+  const meta = PAGE_META.find(m => m.id === page);
+  initShopEditor(page, meta);
+  toast('Carte supprimée.', 'success');
+}
+
+/* =====================================================
    PHOTO UPLOAD
 ===================================================== */
 function initAllPhotoUploads() {
@@ -1129,6 +1212,11 @@ function savePageSection(page) {
   document.querySelectorAll(`input.fi[id^="${page}_"], textarea.fi[id^="${page}_"]`).forEach(el => {
     if (el.value.trim()) updates[el.id] = el.value.trim();
   });
+  // Save dynamic shop card count
+  const shopContainer = document.getElementById(page + '-cards-editor');
+  if (shopContainer) {
+    updates[page + '_shop_count'] = String(shopContainer.querySelectorAll('.card-ed').length);
+  }
   mergeData(updates);
   toast(`✅ Page "${PANEL_TITLES['page_' + page] || page}" sauvegardée !`, 'success');
 }
@@ -1152,7 +1240,8 @@ function saveSection(prefix) {
 function resetPageSection(prefix) {
   if (!confirm(`Réinitialiser toute la page "${prefix}" ?\n\nTextes ET photos seront effacés. Action irréversible.`)) return;
   clearPrefix(prefix);
-  for (let i = 1; i <= 6; i++) localStorage.removeItem(IMG_PFX + prefix + '_' + i);
+  // Clear gallery photos
+  for (let i = 1; i <= 20; i++) localStorage.removeItem(IMG_PFX + prefix + '_' + i);
   for (let i = 1; i <= 3; i++) {
     localStorage.removeItem(IMG_PFX + prefix + '_team_' + i);
     localStorage.removeItem(IMG_PFX + prefix + '_estab_' + i);
@@ -1161,6 +1250,9 @@ function resetPageSection(prefix) {
     uzHide(slot.querySelector('.upload-zone'));
     slot.querySelector('.uz-input').value = '';
   });
+  // Rebuild shop editor with defaults
+  const meta = PAGE_META.find(m => m.id === prefix);
+  initShopEditor(prefix, meta);
   loadAllFields();
   toast(`🔄 Page "${prefix}" réinitialisée.`, 'success');
 }

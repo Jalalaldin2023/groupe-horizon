@@ -50,14 +50,38 @@
     /* Boutique */
     setText('.shop-section .section-tag',  d[p+'_shop_tag']);
     setText('.shop-section .section-title',d[p+'_shop_h2']);
-    qa('.shop-card').forEach((c,i) => {
-      const n=i+1;
-      setIn(c,'.shop-card-icon', d[p+'_c'+n+'_icon']);
-      setIn(c,'.shop-card-name', d[p+'_c'+n+'_name']);
-      setIn(c,'.shop-card-desc', d[p+'_c'+n+'_desc']);
-      setIn(c,'.shop-card-price',d[p+'_c'+n+'_price']);
-      const b=c.querySelector('.btn-sm'); if(b&&d[p+'_c'+n+'_btn']) b.textContent=d[p+'_c'+n+'_btn'];
-    });
+    const shopCount = parseInt(d[p+'_shop_count'] || '0');
+    if (shopCount > 0) {
+      const grid = document.querySelector('.shop-grid');
+      if (grid) {
+        grid.innerHTML = '';
+        for (let n = 1; n <= shopCount; n++) {
+          const icon  = d[p+'_c'+n+'_icon']  || '';
+          const name  = d[p+'_c'+n+'_name']  || '';
+          const desc  = d[p+'_c'+n+'_desc']  || '';
+          const price = d[p+'_c'+n+'_price'] || '';
+          const btn   = d[p+'_c'+n+'_btn']   || 'Demander un devis';
+          if (!name && !icon) continue;
+          const card = document.createElement('div');
+          card.className = 'shop-card reveal';
+          card.innerHTML = '<div class="shop-card-icon">'+icon+'</div>'
+            + '<div class="shop-card-name">'+name+'</div>'
+            + '<div class="shop-card-desc">'+desc+'</div>'
+            + '<span class="shop-card-price'+(price?'':' devis')+'">'+(price||'Sur devis')+'</span>'
+            + '<a href="index.html#contact" class="btn-sm">'+btn+'</a>';
+          grid.appendChild(card);
+        }
+      }
+    } else {
+      qa('.shop-card').forEach((c,i) => {
+        const n=i+1;
+        setIn(c,'.shop-card-icon', d[p+'_c'+n+'_icon']);
+        setIn(c,'.shop-card-name', d[p+'_c'+n+'_name']);
+        setIn(c,'.shop-card-desc', d[p+'_c'+n+'_desc']);
+        setIn(c,'.shop-card-price',d[p+'_c'+n+'_price']);
+        const b=c.querySelector('.btn-sm'); if(b&&d[p+'_c'+n+'_btn']) b.textContent=d[p+'_c'+n+'_btn'];
+      });
+    }
 
     /* Presentation */
     setText('.presentation-section .section-tag', d[p+'_pres_tag']);
