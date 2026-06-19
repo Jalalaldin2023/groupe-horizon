@@ -57,25 +57,31 @@
     setText('.shop-section .section-tag', d[p+'_shop_tag']);
     setText('.shop-section .section-title',d[p+'_shop_h2']);
     const shopCount = parseInt(d[p+'_shop_count'] || '0');
-    if (shopCount >0) {
+    if (shopCount > 0) {
+      // Pre-collect valid cards before touching the DOM
+      const validCards = [];
+      for (let n = 1; n <= shopCount; n++) {
+        const name = d[p+'_c'+n+'_name'] || '';
+        if (!name) continue;
+        validCards.push({ n, name,
+          desc:  d[p+'_c'+n+'_desc']  || '',
+          price: d[p+'_c'+n+'_price'] || '',
+          btn:   d[p+'_c'+n+'_btn']   || 'Demander un devis',
+          imgSrc: localStorage.getItem(IMG_PFX + p + '_shop_' + n)
+        });
+      }
       const grid = document.querySelector('.shop-grid');
-      if (grid) {
+      if (grid && validCards.length > 0) {
         grid.innerHTML = '';
-        for (let n = 1; n <= shopCount; n++) {
-          const name  = d[p+'_c'+n+'_name']  || '';
-          const desc  = d[p+'_c'+n+'_desc']  || '';
-          const price = d[p+'_c'+n+'_price'] || '';
-          const btn   = d[p+'_c'+n+'_btn']   || 'Demander un devis';
-          if (!name) continue;
-          const imgSrc = localStorage.getItem(IMG_PFX + p + '_shop_' + n);
+        for (const c of validCards) {
           const card = document.createElement('div');
           card.className = 'shop-card reveal';
-          const waLink = waBase ? waBase+'?text='+encodeURIComponent('Bonjour, je suis intéressé par : '+name) : '#contact';
-          card.innerHTML = (imgSrc ? '<div class="shop-card-img"><img src="'+imgSrc+'" alt="'+name+'"></div>' : '')
-            + '<div class="shop-card-name">'+name+'</div>'
-            + '<div class="shop-card-desc">'+desc+'</div>'
-            + '<span class="shop-card-price'+(price?'':' devis')+'">'+(price||'Sur devis')+'</span>'
-            + '<a href="'+waLink+'" class="btn-sm"'+(waBase?' target="_blank" rel="noopener"':'')+'>'+btn+'</a>';
+          const waLink = waBase + '?text=' + encodeURIComponent('Bonjour, je suis intéressé par : ' + c.name);
+          card.innerHTML = (c.imgSrc ? '<div class="shop-card-img"><img src="'+c.imgSrc+'" alt="'+c.name+'"></div>' : '')
+            + '<div class="shop-card-name">'+c.name+'</div>'
+            + '<div class="shop-card-desc">'+c.desc+'</div>'
+            + '<span class="shop-card-price'+(c.price?'':' devis')+'">'+(c.price||'Sur devis')+'</span>'
+            + '<a href="'+waLink+'" class="btn-sm" target="_blank" rel="noopener">'+c.btn+'</a>';
           grid.appendChild(card);
         }
       }
