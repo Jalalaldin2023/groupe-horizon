@@ -15,8 +15,9 @@
 
   const page = (location.pathname.split('/').pop() || 'index').replace('.html','') || 'index';
 
-  const waNum = (d.global_whatsapp || '').replace(/\D/g, '');
-  const waBase = waNum ? 'https://wa.me/' + waNum : '';
+  const DEFAULT_WA = '2250709596520';
+  const waNum = (d.global_whatsapp || DEFAULT_WA).replace(/\D/g, '');
+  const waBase = 'https://wa.me/' + waNum;
 
   document.addEventListener('DOMContentLoaded', () =>{
     if (page === 'index') applyAccueil();
@@ -25,7 +26,7 @@
     applyPresPhotos(page);
     applyContact();
     applyLogo();
-    if (waBase) applyWhatsApp();
+    applyWhatsApp();
   });
 
   /* ─── ACCUEIL ─── */
