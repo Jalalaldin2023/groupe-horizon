@@ -2,22 +2,22 @@
 (function () {
   'use strict';
 
-  const DATA_KEY  = 'horizonContent';
+  const DATA_KEY = 'horizonContent';
   const THEME_KEY = 'horizonTheme';
-  const IMG_PFX   = 'horizonImg_';
+  const IMG_PFX = 'horizonImg_';
 
-  const d = JSON.parse(localStorage.getItem(DATA_KEY)  || '{}');
+  const d = JSON.parse(localStorage.getItem(DATA_KEY) || '{}');
   const t = JSON.parse(localStorage.getItem(THEME_KEY) || '{}');
 
   /* Theme (instant — no flash) */
   if (t.bleu) { css('--bleu', t.bleu); css('--bleu-fonce', dark(t.bleu, 30)); }
-  if (t.or)   { css('--or',   t.or);   css('--or-fonce',   dark(t.or,   25)); }
+  if (t.or) { css('--or', t.or); css('--or-fonce', dark(t.or, 25)); }
 
   const page = (location.pathname.split('/').pop() || 'index').replace('.html','') || 'index';
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () =>{
     if (page === 'index') applyAccueil();
-    else                  applyPage(page);
+    else applyPage(page);
     applyImages(page);
     applyPresPhotos(page);
     applyContact();
@@ -25,9 +25,9 @@
 
   /* ─── ACCUEIL ─── */
   function applyAccueil() {
-    setText('.hero h1',    d.accueil_hero_title);
-    setText('.hero-sub',   d.accueil_hero_sub);
-    const s = qa('.hero-stats > div');
+    setText('.hero h1', d.accueil_hero_title);
+    setText('.hero-sub', d.accueil_hero_sub);
+    const s = qa('.hero-stats >div');
     setIn(s[0],'strong', d.accueil_stat1_n); setIn(s[0],'span', d.accueil_stat1_l);
     setIn(s[1],'strong', d.accueil_stat2_n); setIn(s[1],'span', d.accueil_stat2_l);
     setIn(s[2],'strong', d.accueil_stat3_n); setIn(s[2],'span', d.accueil_stat3_l);
@@ -36,31 +36,31 @@
   /* ─── SECTEUR ─── */
   function applyPage(p) {
     /* Hero */
-    setText('.page-hero .hero-tag',        d[p+'_hero_tag']);
-    setText('.page-hero h1',               d[p+'_hero_title']);
-    setNth ('.page-hero .container > p',0, d[p+'_hero_desc']);
+    setText('.page-hero .hero-tag', d[p+'_hero_tag']);
+    setText('.page-hero h1', d[p+'_hero_title']);
+    setNth ('.page-hero .container >p',0, d[p+'_hero_desc']);
 
     /* Intro */
-    setText('.sector-text .section-tag',   d[p+'_intro_tag']);
-    setText('.sector-text h2',             d[p+'_intro_h2']);
-    setNth ('.sector-text > p:not(.section-tag)',0, d[p+'_intro_p']);
-    setText('.sector-text .btn',           d[p+'_intro_cta']);
+    setText('.sector-text .section-tag', d[p+'_intro_tag']);
+    setText('.sector-text h2', d[p+'_intro_h2']);
+    setNth ('.sector-text >p:not(.section-tag)',0, d[p+'_intro_p']);
+    setText('.sector-text .btn', d[p+'_intro_cta']);
     for (let i=1;i<=6;i++) setNth('.checklist li',i-1,d[p+'_check'+i]);
 
     /* Boutique */
-    setText('.shop-section .section-tag',  d[p+'_shop_tag']);
+    setText('.shop-section .section-tag', d[p+'_shop_tag']);
     setText('.shop-section .section-title',d[p+'_shop_h2']);
     const shopCount = parseInt(d[p+'_shop_count'] || '0');
-    if (shopCount > 0) {
+    if (shopCount >0) {
       const grid = document.querySelector('.shop-grid');
       if (grid) {
         grid.innerHTML = '';
         for (let n = 1; n <= shopCount; n++) {
-          const icon  = d[p+'_c'+n+'_icon']  || '';
-          const name  = d[p+'_c'+n+'_name']  || '';
-          const desc  = d[p+'_c'+n+'_desc']  || '';
+          const icon = d[p+'_c'+n+'_icon'] || '';
+          const name = d[p+'_c'+n+'_name'] || '';
+          const desc = d[p+'_c'+n+'_desc'] || '';
           const price = d[p+'_c'+n+'_price'] || '';
-          const btn   = d[p+'_c'+n+'_btn']   || 'Demander un devis';
+          const btn = d[p+'_c'+n+'_btn'] || 'Demander un devis';
           if (!name && !icon) continue;
           const card = document.createElement('div');
           card.className = 'shop-card reveal';
@@ -73,7 +73,7 @@
         }
       }
     } else {
-      qa('.shop-card').forEach((c,i) => {
+      qa('.shop-card').forEach((c,i) =>{
         const n=i+1;
         setIn(c,'.shop-card-icon', d[p+'_c'+n+'_icon']);
         setIn(c,'.shop-card-name', d[p+'_c'+n+'_name']);
@@ -85,29 +85,29 @@
 
     /* Presentation */
     setText('.presentation-section .section-tag', d[p+'_pres_tag']);
-    setText('.presentation-section h2',           d[p+'_pres_h2']);
-    const pp = qa('.pres-text > p');
+    setText('.presentation-section h2', d[p+'_pres_h2']);
+    const pp = qa('.pres-text >p');
     if (pp[0]&&d[p+'_pres_p1']) pp[0].textContent=d[p+'_pres_p1'];
     if (pp[1]&&d[p+'_pres_p2']) pp[1].textContent=d[p+'_pres_p2'];
-    qa('.pres-card').forEach((c,i) => {
+    qa('.pres-card').forEach((c,i) =>{
       const n=i+1;
       setIn(c,'.pres-card-icon',d[p+'_ph'+n+'_icon']);
-      setIn(c,'h4',              d[p+'_ph'+n+'_title']);
-      setIn(c,'p',               d[p+'_ph'+n+'_text']);
+      setIn(c,'h4', d[p+'_ph'+n+'_title']);
+      setIn(c,'p', d[p+'_ph'+n+'_text']);
     });
 
     /* Galerie */
-    setText('.galerie-section .section-tag',  d[p+'_gal_tag']);
+    setText('.galerie-section .section-tag', d[p+'_gal_tag']);
     setText('.galerie-section .section-title',d[p+'_gal_h2']);
-    qa('.galerie-item').forEach((item,i) => {
+    qa('.galerie-item').forEach((item,i) =>{
       const cap=item.querySelector('.galerie-caption');
       if(cap&&d[p+'_gal'+(i+1)+'_caption']) cap.textContent=d[p+'_gal'+(i+1)+'_caption'];
     });
 
     /* Actualites */
-    setText('.actu-section .section-tag',  d[p+'_news_tag']);
+    setText('.actu-section .section-tag', d[p+'_news_tag']);
     setText('.actu-section .section-title',d[p+'_news_h2']);
-    qa('.actu-card').forEach((c,i) => {
+    qa('.actu-card').forEach((c,i) =>{
       const n=i+1;
       setIn(c,'.actu-date', d[p+'_a'+n+'_date']);
       setIn(c,'.actu-title',d[p+'_a'+n+'_title']);
@@ -115,14 +115,14 @@
     });
 
     /* CTA */
-    setText('.contact-cta h2',  d[p+'_cta_h2']);
+    setText('.contact-cta h2', d[p+'_cta_h2']);
     setNth ('.contact-cta p',0, d[p+'_cta_p']);
     setText('.contact-cta .btn',d[p+'_cta_btn']);
   }
 
   /* ─── IMAGES GALERIE ─── */
   function applyImages(p) {
-    qa('.galerie-item').forEach((item,i) => {
+    qa('.galerie-item').forEach((item,i) =>{
       const src = localStorage.getItem(IMG_PFX + p + '_' + (i+1));
       if (!src) return;
       const ph = item.querySelector('.galerie-placeholder');
@@ -135,9 +135,9 @@
     for (let i = 1; i <= 3; i++) {
       const ts = localStorage.getItem(IMG_PFX + p + '_team_' + i);
       const es = localStorage.getItem(IMG_PFX + p + '_estab_' + i);
-      if (ts) { const el = document.querySelector(`[data-pres-team="${i}"]`);  if (el) injectPhoto(el, ts); }
+      if (ts) { const el = document.querySelector(`[data-pres-team="${i}"]`); if (el) injectPhoto(el, ts); }
       if (es) { const el = document.querySelector(`[data-pres-estab="${i}"]`); if (el) injectPhoto(el, es); }
-      if (d[p+'_team'+i+'_caption'])  { const el = document.querySelector(`[data-pres-team-cap="${i}"]`);  if (el) el.textContent = d[p+'_team'+i+'_caption']; }
+      if (d[p+'_team'+i+'_caption']) { const el = document.querySelector(`[data-pres-team-cap="${i}"]`); if (el) el.textContent = d[p+'_team'+i+'_caption']; }
       if (d[p+'_estab'+i+'_caption']) { const el = document.querySelector(`[data-pres-estab-cap="${i}"]`); if (el) el.textContent = d[p+'_estab'+i+'_caption']; }
     }
   }
@@ -158,12 +158,12 @@
   }
 
   /* ─── HELPERS ─── */
-  function qa(s)          { return Array.from(document.querySelectorAll(s)); }
-  function css(k,v)       { document.documentElement.style.setProperty(k,v); }
-  function setText(s,v)   { if(!v)return; const e=document.querySelector(s); if(e)e.textContent=v; }
-  function setNth(s,i,v)  { if(!v)return; const e=qa(s); if(e[i])e[i].textContent=v; }
-  function setIn(p,s,v)   { if(!p||!v)return; const e=p.querySelector(s); if(e)e.textContent=v; }
-  function dark(hex,amt)  {
+  function qa(s) { return Array.from(document.querySelectorAll(s)); }
+  function css(k,v) { document.documentElement.style.setProperty(k,v); }
+  function setText(s,v) { if(!v)return; const e=document.querySelector(s); if(e)e.textContent=v; }
+  function setNth(s,i,v) { if(!v)return; const e=qa(s); if(e[i])e[i].textContent=v; }
+  function setIn(p,s,v) { if(!p||!v)return; const e=p.querySelector(s); if(e)e.textContent=v; }
+  function dark(hex,amt) {
     const n=parseInt(hex.replace('#',''),16);
     const c=v=>Math.max(0,Math.min(255,v-amt));
     return '#'+[c(n>>16),c((n>>8)&0xFF),c(n&0xFF)].map(v=>v.toString(16).padStart(2,'0')).join('');

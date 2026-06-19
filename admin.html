@@ -237,7 +237,7 @@
     }
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.success { border-left: 4px solid var(--green); }
-    .toast.error   { border-left: 4px solid var(--red); }
+    .toast.error { border-left: 4px solid var(--red); }
 
     /* ====== TABS ====== */
     .tabs-nav {
@@ -332,7 +332,7 @@
 <div id="setup-screen" class="auth-screen" style="display:none">
   <div class="auth-card">
     <div class="auth-logo">GROUPE <span>HORIZON</span></div>
-    <div class="auth-badge">⚡ Super Admin</div>
+    <div class="auth-badge">Super Admin</div>
     <h2 class="auth-title">Première connexion</h2>
     <p class="auth-subtitle">Définissez votre mot de passe administrateur. Il sera exigé à chaque connexion.</p>
     <form class="auth-form" id="setup-form">
@@ -345,7 +345,7 @@
         <input type="password" id="s-pwd2" placeholder="Répétez le mot de passe" autocomplete="new-password">
       </div>
       <div class="auth-error" id="s-err"></div>
-      <button type="submit" class="auth-btn">🔐 Créer mon accès admin</button>
+      <button type="submit" class="auth-btn">Créer mon accès admin</button>
     </form>
   </div>
 </div>
@@ -354,7 +354,7 @@
 <div id="login-screen" class="auth-screen" style="display:none">
   <div class="auth-card">
     <div class="auth-logo">GROUPE <span>HORIZON</span></div>
-    <div class="auth-badge">⚡ Super Admin</div>
+    <div class="auth-badge">Super Admin</div>
     <h2 class="auth-title">Connexion</h2>
     <p class="auth-subtitle">Accès réservé à l'administrateur du site Groupe Horizon.</p>
     <form class="auth-form" id="login-form">
@@ -363,7 +363,7 @@
         <input type="password" id="l-pwd" placeholder="Votre mot de passe admin" autocomplete="current-password">
       </div>
       <div class="auth-error" id="l-err"></div>
-      <button type="submit" class="auth-btn">🔓 Accéder au tableau de bord</button>
+      <button type="submit" class="auth-btn">Accéder au tableau de bord</button>
     </form>
   </div>
 </div>
@@ -374,30 +374,30 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">GROUPE <span>HORIZON</span></div>
-      <div class="sidebar-badge">⚡ Super Admin</div>
+      <div class="sidebar-badge">Super Admin</div>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-group-title">Général</div>
-      <div class="nav-item active" data-panel="dashboard"><span class="nav-icon">🏠</span>Tableau de bord</div>
-      <div class="nav-item" data-panel="contact"><span class="nav-icon">📞</span>Contact &amp; coordonnées</div>
-      <div class="nav-item" data-panel="theme"><span class="nav-icon">🎨</span>Thème &amp; couleurs</div>
+      <div class="nav-item active" data-panel="dashboard"><span class="nav-icon"></span>Tableau de bord</div>
+      <div class="nav-item" data-panel="contact"><span class="nav-icon"></span>Contact &amp; coordonnées</div>
+      <div class="nav-item" data-panel="theme"><span class="nav-icon"></span>Thème &amp; couleurs</div>
 
       <div class="nav-group-title">Pages du site</div>
-      <div class="nav-item" data-panel="accueil"><span class="nav-icon">🌐</span>Accueil</div>
-      <div class="nav-item" data-panel="restauration"><span class="nav-icon">🍽️</span>Restauration</div>
-      <div class="nav-item" data-panel="imprimerie"><span class="nav-icon">🖨️</span>Imprimerie</div>
-      <div class="nav-item" data-panel="btp"><span class="nav-icon">🏗️</span>BTP &amp; Construction</div>
-      <div class="nav-item" data-panel="automobile"><span class="nav-icon">🚗</span>Automobile</div>
-      <div class="nav-item" data-panel="securite"><span class="nav-icon">📹</span>Sécurité</div>
-      <div class="nav-item" data-panel="elevage"><span class="nav-icon">🐄</span>Élevage</div>
-      <div class="nav-item" data-panel="immobilier"><span class="nav-icon">🏠</span>Immobilier</div>
-      <div class="nav-item" data-panel="foncier"><span class="nav-icon">📐</span>Foncier</div>
+      <div class="nav-item" data-panel="accueil"><span class="nav-icon"></span>Accueil</div>
+      <div class="nav-item" data-panel="restauration"><span class="nav-icon"></span>Restauration</div>
+      <div class="nav-item" data-panel="imprimerie"><span class="nav-icon"></span>Imprimerie</div>
+      <div class="nav-item" data-panel="btp"><span class="nav-icon"></span>BTP &amp; Construction</div>
+      <div class="nav-item" data-panel="automobile"><span class="nav-icon"></span>Automobile</div>
+      <div class="nav-item" data-panel="securite"><span class="nav-icon"></span>Sécurité</div>
+      <div class="nav-item" data-panel="elevage"><span class="nav-icon"></span>Élevage</div>
+      <div class="nav-item" data-panel="immobilier"><span class="nav-icon"></span>Immobilier</div>
+      <div class="nav-item" data-panel="foncier"><span class="nav-icon"></span>Foncier</div>
 
       <div class="nav-group-title">Administration</div>
-      <div class="nav-item" data-panel="settings"><span class="nav-icon">⚙️</span>Paramètres</div>
+      <div class="nav-item" data-panel="settings"><span class="nav-icon"></span>Paramètres</div>
     </nav>
     <div class="sidebar-footer">
-      <button class="logout-btn" id="logout-btn">🚪 Se déconnecter</button>
+      <button class="logout-btn" id="logout-btn">Se déconnecter</button>
     </div>
   </aside>
 
@@ -415,7 +415,7 @@
       <!-- DASHBOARD -->
       <div id="panel-dashboard" class="panel active">
         <div class="dash-welcome">
-          <h2>Bienvenue, Administrateur 👋</h2>
+          <h2>Bienvenue, Administrateur </h2>
           <p>Modifiez textes, photos et contenu de chaque page directement depuis ce tableau de bord.</p>
         </div>
         <div class="dash-grid" id="dash-grid"></div>
@@ -424,7 +424,7 @@
       <!-- CONTACT -->
       <div id="panel-contact" class="panel">
         <div class="form-section">
-          <div class="section-head"><span>📞</span><span class="section-head-title">Coordonnées &amp; contact</span></div>
+          <div class="section-head"><span></span><span class="section-head-title">Coordonnées &amp; contact</span></div>
           <div class="section-body">
             <div class="fg row2">
               <div><label>Téléphone principal</label><input class="fi" id="c_phone" placeholder="+225 00 00 00 00 00"></div>
@@ -436,7 +436,7 @@
           </div>
         </div>
         <div class="actions-bar">
-          <button class="btn-save" onclick="saveSection('contact')">💾 Sauvegarder</button>
+          <button class="btn-save" onclick="saveSection('contact')">Sauvegarder</button>
           <a href="index.html#contact" target="_blank" class="btn-link">↗ Voir la section contact</a>
         </div>
       </div>
@@ -444,7 +444,7 @@
       <!-- THEME -->
       <div id="panel-theme" class="panel">
         <div class="form-section">
-          <div class="section-head"><span>🎨</span><span class="section-head-title">Couleurs du site</span></div>
+          <div class="section-head"><span></span><span class="section-head-title">Couleurs du site</span></div>
           <div class="section-body">
             <div class="fg row2">
               <div>
@@ -462,7 +462,7 @@
           </div>
         </div>
         <div class="actions-bar">
-          <button class="btn-save" onclick="saveTheme()">💾 Appliquer le thème</button>
+          <button class="btn-save" onclick="saveTheme()">Appliquer le thème</button>
           <button class="btn-danger" onclick="resetTheme()">Réinitialiser</button>
         </div>
       </div>
@@ -470,14 +470,14 @@
       <!-- ACCUEIL -->
       <div id="panel-accueil" class="panel">
         <div class="form-section">
-          <div class="section-head"><span>🌐</span><span class="section-head-title">Bannière principale (hero)</span></div>
+          <div class="section-head"><span></span><span class="section-head-title">Bannière principale (hero)</span></div>
           <div class="section-body">
             <div class="fg"><label>Titre principal</label><input class="fi" id="accueil_hero_title" placeholder="Le Groupe qui bâtit votre avenir"></div>
             <div class="fg"><label>Sous-titre</label><textarea class="fi" id="accueil_hero_sub" placeholder="Immobilier, BTP, Restauration, Automobile..."></textarea></div>
           </div>
         </div>
         <div class="form-section">
-          <div class="section-head"><span>📊</span><span class="section-head-title">Chiffres clés</span></div>
+          <div class="section-head"><span></span><span class="section-head-title">Chiffres clés</span></div>
           <div class="section-body">
             <div class="fg row3">
               <div><label>Chiffre 1</label><input class="fi" id="accueil_stat1_n" placeholder="8+">
@@ -490,7 +490,7 @@
           </div>
         </div>
         <div class="actions-bar">
-          <button class="btn-save" onclick="saveSection('accueil')">💾 Sauvegarder</button>
+          <button class="btn-save" onclick="saveSection('accueil')">Sauvegarder</button>
           <button class="btn-danger" onclick="resetSection('accueil')">Réinitialiser</button>
           <a href="index.html" target="_blank" class="btn-link">↗ Voir la page</a>
         </div>
@@ -498,20 +498,20 @@
 
       <!-- SECTOR PANELS (generated by JS) -->
       <div id="panel-restauration" class="panel"></div>
-      <div id="panel-imprimerie"   class="panel"></div>
-      <div id="panel-btp"          class="panel"></div>
-      <div id="panel-automobile"   class="panel"></div>
-      <div id="panel-securite"     class="panel"></div>
-      <div id="panel-elevage"      class="panel"></div>
-      <div id="panel-immobilier"   class="panel"></div>
-      <div id="panel-foncier"      class="panel"></div>
+      <div id="panel-imprimerie" class="panel"></div>
+      <div id="panel-btp" class="panel"></div>
+      <div id="panel-automobile" class="panel"></div>
+      <div id="panel-securite" class="panel"></div>
+      <div id="panel-elevage" class="panel"></div>
+      <div id="panel-immobilier" class="panel"></div>
+      <div id="panel-foncier" class="panel"></div>
 
       <!-- SETTINGS -->
       <div id="panel-settings" class="panel">
         <div class="form-section">
-          <div class="section-head"><span>🔑</span><span class="section-head-title">Changer le mot de passe</span></div>
+          <div class="section-head"><span></span><span class="section-head-title">Changer le mot de passe</span></div>
           <div class="section-body">
-            <div class="info-box">⚠️ Choisissez un mot de passe fort (8 caractères minimum). Il sera requis à chaque connexion.</div>
+            <div class="info-box">Choisissez un mot de passe fort (8 caractères minimum). Il sera requis à chaque connexion.</div>
             <div class="fg"><label>Mot de passe actuel</label><input type="password" class="fi" id="s_old"></div>
             <div class="fg row2">
               <div><label>Nouveau mot de passe</label><input type="password" class="fi" id="s_new"></div>
@@ -521,12 +521,12 @@
           </div>
         </div>
         <div class="actions-bar">
-          <button class="btn-save" onclick="changePassword()">🔐 Mettre à jour le mot de passe</button>
+          <button class="btn-save" onclick="changePassword()">Mettre à jour le mot de passe</button>
         </div>
         <div class="danger-zone" style="margin-top:1.5rem">
-          <h4>⚠️ Zone de danger</h4>
+          <h4>Zone de danger</h4>
           <p>Réinitialise tout le contenu personnalisé, toutes les photos et le thème. Cette action est irréversible.</p>
-          <button class="btn-danger" onclick="resetAll()">🗑️ Tout réinitialiser</button>
+          <button class="btn-danger" onclick="resetAll()">Tout réinitialiser</button>
         </div>
       </div>
 
@@ -540,18 +540,18 @@
 /* =====================================================
    CONSTANTES
 ===================================================== */
-const HASH_KEY    = 'gh_admin_hash';
+const HASH_KEY = 'gh_admin_hash';
 const SESSION_KEY = 'gh_admin_session';
-const DATA_KEY    = 'horizonContent';
-const THEME_KEY   = 'horizonTheme';
-const IMG_PFX     = 'horizonImg_';
+const DATA_KEY = 'horizonContent';
+const THEME_KEY = 'horizonTheme';
+const IMG_PFX = 'horizonImg_';
 
 /* =====================================================
    CONFIG PAGES
 ===================================================== */
 const PAGE_META = [
   {
-    id:'restauration', icon:'🍽️', label:'Restauration', href:'restauration.html',
+    id:'restauration', icon:'', label:'Restauration', href:'restauration.html',
     galDef:['Plats ivoiriens','Cuisine africaine','Grillade & BBQ','Formules buffet','Traiteur mariage','Livraison express'],
     newsDef:[
       ['Juin 2026','Nouveau menu saison des pluies','Découvrez nos nouveaux plats chauds...'],
@@ -560,16 +560,16 @@ const PAGE_META = [
     ],
     checks:['Restaurant : cuisine ivoirienne, africaine et internationale','Traiteur événementiel : mariages, séminaires, réceptions','Restauration collective pour entreprises et écoles','Livraison de repas et plats à emporter','Produits frais issus de notre propre élevage'],
     cardDef:[
-      {icon:'🍱',name:'Menu du jour',desc:'Un plat chaud au choix + boisson.',price:'3 000 FCFA'},
-      {icon:'🥩',name:'Menu VIP',desc:'Entrée + plat + dessert + boisson.',price:'6 000 FCFA'},
-      {icon:'💍',name:'Traiteur mariage',desc:'Formule complète, cocktail, buffet.',price:'Sur devis'},
-      {icon:'🤝',name:'Traiteur séminaire',desc:'Pauses-café, buffet, cocktail.',price:'Sur devis'},
-      {icon:'🏫',name:'Restauration collective',desc:'Contrat mensuel entreprises.',price:'Sur devis'},
-      {icon:'🛵',name:'Livraison à domicile',desc:'Livraison rapide sur Abidjan.',price:'dès 5 000 FCFA'},
+      {icon:'',name:'Menu du jour',desc:'Un plat chaud au choix + boisson.',price:'3 000 FCFA'},
+      {icon:'',name:'Menu VIP',desc:'Entrée + plat + dessert + boisson.',price:'6 000 FCFA'},
+      {icon:'',name:'Traiteur mariage',desc:'Formule complète, cocktail, buffet.',price:'Sur devis'},
+      {icon:'',name:'Traiteur séminaire',desc:'Pauses-café, buffet, cocktail.',price:'Sur devis'},
+      {icon:'',name:'Restauration collective',desc:'Contrat mensuel entreprises.',price:'Sur devis'},
+      {icon:'',name:'Livraison à domicile',desc:'Livraison rapide sur Abidjan.',price:'dès 5 000 FCFA'},
     ],
   },
   {
-    id:'imprimerie', icon:'🖨️', label:'Imprimerie', href:'imprimerie.html',
+    id:'imprimerie', icon:'', label:'Imprimerie', href:'imprimerie.html',
     galDef:['Cartes de visite','Flyers & prospectus','Bâches & kakémonos','Enseignes lumineuses','Grand format','Reliure & finitions'],
     newsDef:[
       ['Juin 2026','Nouveau traceur grand format','Nous investissons dans une nouvelle machine...'],
@@ -578,16 +578,16 @@ const PAGE_META = [
     ],
     checks:['Impression offset et numérique haute qualité','Cartes de visite, flyers, brochures, catalogues','Bâches, kakémonos, roll-up et affichage','Enseignes lumineuses et panneaux extérieurs','Reliure, pelliculage et finitions spéciales'],
     cardDef:[
-      {icon:'🪪',name:'Cartes de visite',desc:'250 cartes, 2 faces couleur.',price:'8 000 FCFA'},
-      {icon:'📄',name:'Flyers A5',desc:'1000 exemplaires recto-verso couleur.',price:'15 000 FCFA'},
-      {icon:'📜',name:'Brochure A4',desc:'500 exemplaires 8 pages couleur.',price:'45 000 FCFA'},
-      {icon:'🚩',name:'Bâche publicitaire',desc:'Format 2×1 m, impression HD.',price:'25 000 FCFA'},
-      {icon:'🪟',name:'Kakémono / roll-up',desc:'85×200 cm avec pied aluminium.',price:'35 000 FCFA'},
-      {icon:'💡',name:'Enseigne lumineuse',desc:'Lettres découpées et backlit.',price:'Sur devis'},
+      {icon:'',name:'Cartes de visite',desc:'250 cartes, 2 faces couleur.',price:'8 000 FCFA'},
+      {icon:'',name:'Flyers A5',desc:'1000 exemplaires recto-verso couleur.',price:'15 000 FCFA'},
+      {icon:'',name:'Brochure A4',desc:'500 exemplaires 8 pages couleur.',price:'45 000 FCFA'},
+      {icon:'',name:'Bâche publicitaire',desc:'Format 2×1 m, impression HD.',price:'25 000 FCFA'},
+      {icon:'',name:'Kakémono / roll-up',desc:'85×200 cm avec pied aluminium.',price:'35 000 FCFA'},
+      {icon:'',name:'Enseigne lumineuse',desc:'Lettres découpées et backlit.',price:'Sur devis'},
     ],
   },
   {
-    id:'btp', icon:'🏗️', label:'BTP & Construction', href:'btp.html',
+    id:'btp', icon:'', label:'BTP & Construction', href:'btp.html',
     galDef:['Construction villa','Rénovation intérieure','Électricité bâtiment','Plomberie & sanitaires','Peinture & finitions','Suivi de chantier'],
     newsDef:[
       ['Juin 2026','Livraison villa R+1 à Cocody','Remise des clés d\'une villa duplex de 280 m²...'],
@@ -596,16 +596,16 @@ const PAGE_META = [
     ],
     checks:['Construction de villas, immeubles et bâtiments industriels','Rénovation et réhabilitation de bâtiments anciens','Travaux publics : voirie, assainissement, terrassement','Plomberie, électricité, peinture, carrelage et menuiserie','Suivi de chantier et maîtrise d\'œuvre','Études techniques et plans d\'architecte'],
     cardDef:[
-      {icon:'🏠',name:'Construction villa',desc:'Maison individuelle clé en main.',price:'Sur devis'},
-      {icon:'🔨',name:'Rénovation complète',desc:'Réhabilitation intérieure et extérieure.',price:'Sur devis'},
-      {icon:'⚡',name:'Électricité bâtiment',desc:'Installation complète, mise aux normes.',price:'Sur devis'},
-      {icon:'🚿',name:'Plomberie & sanitaires',desc:'Installation complète, tuyauterie.',price:'Sur devis'},
-      {icon:'🎨',name:'Peinture & finitions',desc:'Intérieure et extérieure, carrelage.',price:'Sur devis'},
-      {icon:'📋',name:'Suivi de chantier',desc:'Maîtrise d\'œuvre, rapports hebdo.',price:'Sur devis'},
+      {icon:'',name:'Construction villa',desc:'Maison individuelle clé en main.',price:'Sur devis'},
+      {icon:'',name:'Rénovation complète',desc:'Réhabilitation intérieure et extérieure.',price:'Sur devis'},
+      {icon:'',name:'Électricité bâtiment',desc:'Installation complète, mise aux normes.',price:'Sur devis'},
+      {icon:'',name:'Plomberie & sanitaires',desc:'Installation complète, tuyauterie.',price:'Sur devis'},
+      {icon:'',name:'Peinture & finitions',desc:'Intérieure et extérieure, carrelage.',price:'Sur devis'},
+      {icon:'',name:'Suivi de chantier',desc:'Maîtrise d\'œuvre, rapports hebdo.',price:'Sur devis'},
     ],
   },
   {
-    id:'automobile', icon:'🚗', label:'Automobile', href:'automobile.html',
+    id:'automobile', icon:'', label:'Automobile', href:'automobile.html',
     galDef:['Citadines & berlines','SUV & 4x4','Minibus 9-15 places','Location avec chauffeur','Atelier & entretien','Véhicules d\'occasion'],
     newsDef:[
       ['Juin 2026','5 nouveaux SUV dans notre parc','Nous renforçons notre flotte avec 5 Toyota RAV4 2024...'],
@@ -614,16 +614,16 @@ const PAGE_META = [
     ],
     checks:['Location courte et longue durée','Location avec chauffeur pour déplacements professionnels','Vente de véhicules neufs et d\'occasion garantis','Reprise de votre ancien véhicule','Solutions de financement adaptées'],
     cardDef:[
-      {icon:'🚗',name:'Citadine / Berline',desc:'Toyota Corolla ou similaire. Climatisée, assurée.',price:'25 000 FCFA/jour'},
-      {icon:'🚙',name:'SUV / 4x4',desc:'Toyota Prado ou similaire. GPS inclus.',price:'45 000 FCFA/jour'},
-      {icon:'🚐',name:'Minibus 9-15 places',desc:'Transport de groupe, climatisé.',price:'55 000 FCFA/jour'},
-      {icon:'👔',name:'Avec chauffeur',desc:'Chauffeur professionnel et discret.',price:'+15 000 FCFA/jour'},
-      {icon:'📅',name:'Location longue durée',desc:'Contrat mensuel avec entretien inclus.',price:'Sur devis'},
-      {icon:'🏷️',name:'Véhicule d\'occasion',desc:'Contrôlé et garanti 3 mois.',price:'Sur devis'},
+      {icon:'',name:'Citadine / Berline',desc:'Toyota Corolla ou similaire. Climatisée, assurée.',price:'25 000 FCFA/jour'},
+      {icon:'',name:'SUV / 4x4',desc:'Toyota Prado ou similaire. GPS inclus.',price:'45 000 FCFA/jour'},
+      {icon:'',name:'Minibus 9-15 places',desc:'Transport de groupe, climatisé.',price:'55 000 FCFA/jour'},
+      {icon:'',name:'Avec chauffeur',desc:'Chauffeur professionnel et discret.',price:'+15 000 FCFA/jour'},
+      {icon:'',name:'Location longue durée',desc:'Contrat mensuel avec entretien inclus.',price:'Sur devis'},
+      {icon:'',name:'Véhicule d\'occasion',desc:'Contrôlé et garanti 3 mois.',price:'Sur devis'},
     ],
   },
   {
-    id:'securite', icon:'📹', label:'Sécurité', href:'securite.html',
+    id:'securite', icon:'', label:'Sécurité', href:'securite.html',
     galDef:['Caméras IP HD','Centrale d\'alarme','Contrôle d\'accès','Télésurveillance 24h','Agents de sécurité','Installation réseau'],
     newsDef:[
       ['Juin 2026','Caméras 4K disponibles','Nos nouvelles caméras haute définition 4K Ultra...'],
@@ -632,16 +632,16 @@ const PAGE_META = [
     ],
     checks:['Vidéosurveillance IP et analogique HD','Systèmes d\'alarme intrusion et incendie','Contrôle d\'accès et badges magnétiques','Télésurveillance 24h/24 avec intervention rapide','Agents de sécurité qualifiés et certifiés','Installation et maintenance de réseaux'],
     cardDef:[
-      {icon:'📷',name:'Pack surveillance 4 caméras',desc:'4 caméras HD + enregistreur DVR.',price:'250 000 FCFA'},
-      {icon:'🔔',name:'Alarme intrusion',desc:'Centrale + détecteurs + sirène.',price:'180 000 FCFA'},
-      {icon:'🚪',name:'Contrôle d\'accès',desc:'Badge, digicode, biométrique.',price:'Sur devis'},
-      {icon:'📡',name:'Télésurveillance',desc:'Surveillance 24h/24 avec intervention.',price:'15 000 FCFA/mois'},
-      {icon:'👮',name:'Agents de sécurité',desc:'Gardiens qualifiés, formés CNSP.',price:'Sur devis'},
-      {icon:'🔌',name:'Réseau informatique',desc:'Câblage, Wi-Fi, fibre optique.',price:'Sur devis'},
+      {icon:'',name:'Pack surveillance 4 caméras',desc:'4 caméras HD + enregistreur DVR.',price:'250 000 FCFA'},
+      {icon:'',name:'Alarme intrusion',desc:'Centrale + détecteurs + sirène.',price:'180 000 FCFA'},
+      {icon:'',name:'Contrôle d\'accès',desc:'Badge, digicode, biométrique.',price:'Sur devis'},
+      {icon:'',name:'Télésurveillance',desc:'Surveillance 24h/24 avec intervention.',price:'15 000 FCFA/mois'},
+      {icon:'',name:'Agents de sécurité',desc:'Gardiens qualifiés, formés CNSP.',price:'Sur devis'},
+      {icon:'',name:'Réseau informatique',desc:'Câblage, Wi-Fi, fibre optique.',price:'Sur devis'},
     ],
   },
   {
-    id:'elevage', icon:'🐄', label:'Élevage', href:'elevage.html',
+    id:'elevage', icon:'', label:'Élevage', href:'elevage.html',
     galDef:['Cheptel bovin','Élevage avicole','Porcin & ovin','Fourrage naturel','Soins vétérinaires','Livraison directe'],
     newsDef:[
       ['Juin 2026','Nouveau lot de 50 bovins','Notre cheptel s\'agrandit avec 50 nouveaux bovins...'],
@@ -650,16 +650,16 @@ const PAGE_META = [
     ],
     checks:['Élevage bovin, ovin et caprin','Aviculture : volailles et œufs frais','Élevage porcin en filière contrôlée','Fourrage naturel cultivé sur site','Suivi vétérinaire régulier des animaux','Livraison directe aux professionnels'],
     cardDef:[
-      {icon:'🐄',name:'Bovin (vache/taureau)',desc:'Races locales et croisées, bonne conformation.',price:'Sur devis'},
-      {icon:'🐔',name:'Volailles & poulets',desc:'Poulets de chair, poules pondeuses, pintades.',price:'Sur devis'},
-      {icon:'🐖',name:'Porcs & ovin',desc:'Porcs charcutiers et moutons.',price:'Sur devis'},
-      {icon:'🥚',name:'Œufs frais',desc:'Poules élevées en plein air.',price:'2 500 FCFA/plateau'},
-      {icon:'🌿',name:'Fourrage & aliments',desc:'Maïs, soja, foin pour éleveurs.',price:'Sur devis'},
-      {icon:'🚚',name:'Livraison pro',desc:'Directement restaurants et marchés.',price:'Sur devis'},
+      {icon:'',name:'Bovin (vache/taureau)',desc:'Races locales et croisées, bonne conformation.',price:'Sur devis'},
+      {icon:'',name:'Volailles & poulets',desc:'Poulets de chair, poules pondeuses, pintades.',price:'Sur devis'},
+      {icon:'',name:'Porcs & ovin',desc:'Porcs charcutiers et moutons.',price:'Sur devis'},
+      {icon:'',name:'Œufs frais',desc:'Poules élevées en plein air.',price:'2 500 FCFA/plateau'},
+      {icon:'',name:'Fourrage & aliments',desc:'Maïs, soja, foin pour éleveurs.',price:'Sur devis'},
+      {icon:'',name:'Livraison pro',desc:'Directement restaurants et marchés.',price:'Sur devis'},
     ],
   },
   {
-    id:'immobilier', icon:'🏠', label:'Immobilier', href:'immobilier.html',
+    id:'immobilier', icon:'', label:'Immobilier', href:'immobilier.html',
     galDef:['Villa à vendre','Appartements neufs','Terrain constructible','Bureau à louer','Résidence sécurisée','Gestion locative'],
     newsDef:[
       ['Juin 2026','Villa 4 chambres à Cocody','Nouvelle villa R+1 en vente à Cocody Ambassades...'],
@@ -668,16 +668,16 @@ const PAGE_META = [
     ],
     checks:['Vente de terrains et de maisons','Location de villas, appartements et bureaux','Gestion locative clé en main','Syndic de copropriété','Conseil en investissement immobilier','Estimation et expertise de biens'],
     cardDef:[
-      {icon:'🏡',name:'Villa à vendre',desc:'Villas 3 à 6 chambres sur plan ou prêtes.',price:'Sur devis'},
-      {icon:'🏢',name:'Appartement neuf',desc:'T2 à T4 dans résidences sécurisées.',price:'Sur devis'},
-      {icon:'📐',name:'Terrain constructible',desc:'Lots viabilisés avec titre foncier.',price:'Sur devis'},
-      {icon:'🏬',name:'Bureau / commercial',desc:'Plateaux de bureaux et locaux commerciaux.',price:'Sur devis'},
-      {icon:'🔑',name:'Gestion locative',desc:'Encaissement, entretien, suivi.',price:'10% des loyers'},
-      {icon:'📊',name:'Conseil immobilier',desc:'Estimation, expertise et conseil achat.',price:'Sur devis'},
+      {icon:'',name:'Villa à vendre',desc:'Villas 3 à 6 chambres sur plan ou prêtes.',price:'Sur devis'},
+      {icon:'',name:'Appartement neuf',desc:'T2 à T4 dans résidences sécurisées.',price:'Sur devis'},
+      {icon:'',name:'Terrain constructible',desc:'Lots viabilisés avec titre foncier.',price:'Sur devis'},
+      {icon:'',name:'Bureau / commercial',desc:'Plateaux de bureaux et locaux commerciaux.',price:'Sur devis'},
+      {icon:'',name:'Gestion locative',desc:'Encaissement, entretien, suivi.',price:'10% des loyers'},
+      {icon:'',name:'Conseil immobilier',desc:'Estimation, expertise et conseil achat.',price:'Sur devis'},
     ],
   },
   {
-    id:'foncier', icon:'📐', label:'Aménagement foncier', href:'foncier.html',
+    id:'foncier', icon:'', label:'Aménagement foncier', href:'foncier.html',
     galDef:['Bornage de terrain','Levé topographique','Lotissement parcelles','Titre foncier','Route d\'accès','Clôture & viabilisation'],
     newsDef:[
       ['Juin 2026','Nouveau lotissement à Songon','25 parcelles disponibles dans la zone de Songon...'],
@@ -686,12 +686,12 @@ const PAGE_META = [
     ],
     checks:['Bornage et délimitation de parcelles','Levés topographiques et géomètre-expert','Lotissement et division de terrain','Acquisition et sécurisation de titre foncier','Viabilisation : eau, électricité, route d\'accès','Clôture et murs de délimitation'],
     cardDef:[
-      {icon:'📍',name:'Bornage de terrain',desc:'Délimitation précise avec bornes officielles.',price:'Sur devis'},
-      {icon:'📊',name:'Levé topographique',desc:'Cartographie et plan de masse certifiés.',price:'Sur devis'},
-      {icon:'📋',name:'Obtention titre foncier',desc:'Accompagnement complet dossier TF.',price:'Sur devis'},
-      {icon:'🏘️',name:'Lotissement',desc:'Division en lots + plan d\'urbanisme.',price:'Sur devis'},
-      {icon:'🛣️',name:'Voirie & accès',desc:'Ouverture de pistes et routes d\'accès.',price:'Sur devis'},
-      {icon:'🧱',name:'Clôture & viabilisation',desc:'Mur de clôture et raccordements réseaux.',price:'Sur devis'},
+      {icon:'',name:'Bornage de terrain',desc:'Délimitation précise avec bornes officielles.',price:'Sur devis'},
+      {icon:'',name:'Levé topographique',desc:'Cartographie et plan de masse certifiés.',price:'Sur devis'},
+      {icon:'',name:'Obtention titre foncier',desc:'Accompagnement complet dossier TF.',price:'Sur devis'},
+      {icon:'',name:'Lotissement',desc:'Division en lots + plan d\'urbanisme.',price:'Sur devis'},
+      {icon:'',name:'Voirie & accès',desc:'Ouverture de pistes et routes d\'accès.',price:'Sur devis'},
+      {icon:'',name:'Clôture & viabilisation',desc:'Mur de clôture et raccordements réseaux.',price:'Sur devis'},
     ],
   },
 ];
@@ -709,14 +709,14 @@ const PANEL_TITLES = {
 ===================================================== */
 async function sha256(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  return Array.from(new Uint8Array(buf)).map(b =>b.toString(16).padStart(2,'0')).join('');
 }
 
 /* =====================================================
    AUTH
 ===================================================== */
 function isFirstRun() { return !localStorage.getItem(HASH_KEY); }
-function isLoggedIn()  { return sessionStorage.getItem(SESSION_KEY) === '1'; }
+function isLoggedIn() { return sessionStorage.getItem(SESSION_KEY) === '1'; }
 
 function showAuth() {
   if (isFirstRun()) {
@@ -738,21 +738,21 @@ function showAdmin() {
   updateThemePreview();
 }
 
-document.getElementById('setup-form').addEventListener('submit', async e => {
+document.getElementById('setup-form').addEventListener('submit', async e =>{
   e.preventDefault();
-  const pwd  = document.getElementById('s-pwd').value;
+  const pwd = document.getElementById('s-pwd').value;
   const pwd2 = document.getElementById('s-pwd2').value;
-  const err  = document.getElementById('s-err');
+  const err = document.getElementById('s-err');
   if (pwd.length < 8) { showErr(err,'Le mot de passe doit contenir au moins 8 caractères.'); return; }
-  if (pwd !== pwd2)    { showErr(err,'Les deux mots de passe ne correspondent pas.'); return; }
+  if (pwd !== pwd2) { showErr(err,'Les deux mots de passe ne correspondent pas.'); return; }
   err.classList.remove('show');
   localStorage.setItem(HASH_KEY, await sha256(pwd));
   sessionStorage.setItem(SESSION_KEY, '1');
   showAdmin();
-  toast('✅ Accès administrateur créé avec succès !', 'success');
+  toast('Accès administrateur créé avec succès !', 'success');
 });
 
-document.getElementById('login-form').addEventListener('submit', async e => {
+document.getElementById('login-form').addEventListener('submit', async e =>{
   e.preventDefault();
   const pwd = document.getElementById('l-pwd').value;
   const err = document.getElementById('l-err');
@@ -760,13 +760,13 @@ document.getElementById('login-form').addEventListener('submit', async e => {
     sessionStorage.setItem(SESSION_KEY, '1');
     err.classList.remove('show');
     showAdmin();
-    toast('✅ Connexion réussie !', 'success');
+    toast('Connexion réussie !', 'success');
   } else {
     showErr(err, 'Mot de passe incorrect. Réessayez.');
   }
 });
 
-document.getElementById('logout-btn').addEventListener('click', () => {
+document.getElementById('logout-btn').addEventListener('click', () =>{
   sessionStorage.removeItem(SESSION_KEY);
   location.reload();
 });
@@ -775,23 +775,23 @@ document.getElementById('logout-btn').addEventListener('click', () => {
    NAVIGATION
 ===================================================== */
 function showPanel(id) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p =>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n =>n.classList.remove('active'));
   document.getElementById('panel-' + id)?.classList.add('active');
   document.querySelector(`.nav-item[data-panel="${id}"]`)?.classList.add('active');
   document.getElementById('topbar-title').textContent = PANEL_TITLES[id] || id;
   window.scrollTo(0, 0);
 }
 
-document.querySelectorAll('.nav-item[data-panel]').forEach(el => {
-  el.addEventListener('click', () => showPanel(el.dataset.panel));
+document.querySelectorAll('.nav-item[data-panel]').forEach(el =>{
+  el.addEventListener('click', () =>showPanel(el.dataset.panel));
 });
 
 /* =====================================================
    STORAGE
 ===================================================== */
-function getData()       { try { return JSON.parse(localStorage.getItem(DATA_KEY) || '{}'); } catch { return {}; } }
-function mergeData(obj)  { const d = getData(); Object.assign(d, obj); localStorage.setItem(DATA_KEY, JSON.stringify(d)); }
+function getData() { try { return JSON.parse(localStorage.getItem(DATA_KEY) || '{}'); } catch { return {}; } }
+function mergeData(obj) { const d = getData(); Object.assign(d, obj); localStorage.setItem(DATA_KEY, JSON.stringify(d)); }
 function clearPrefix(pfx){ const d = getData(); Object.keys(d).filter(k=>k.startsWith(pfx+'_')).forEach(k=>delete d[k]); localStorage.setItem(DATA_KEY, JSON.stringify(d)); }
 
 /* =====================================================
@@ -799,13 +799,13 @@ function clearPrefix(pfx){ const d = getData(); Object.keys(d).filter(k=>k.start
 ===================================================== */
 function buildDashboard() {
   const items = [
-    {id:'contact', icon:'📞', label:'Contact'},
-    {id:'theme',   icon:'🎨', label:'Thème'},
-    {id:'accueil', icon:'🌐', label:'Accueil'},
+    {id:'contact', icon:'', label:'Contact'},
+    {id:'theme', icon:'', label:'Thème'},
+    {id:'accueil', icon:'', label:'Accueil'},
     ...PAGE_META,
-    {id:'settings',icon:'⚙️', label:'Paramètres'},
+    {id:'settings',icon:'', label:'Paramètres'},
   ];
-  document.getElementById('dash-grid').innerHTML = items.map(p => `
+  document.getElementById('dash-grid').innerHTML = items.map(p =>`
     <div class="dash-card" onclick="showPanel('${p.id}')">
       <div class="dash-icon">${p.icon}</div>
       <div class="dash-name">${p.label}</div>
@@ -817,16 +817,16 @@ function buildDashboard() {
    BUILD ALL PAGE PANELS
 ===================================================== */
 function buildAllPagePanels() {
-  PAGE_META.forEach(meta => {
+  PAGE_META.forEach(meta =>{
     const panel = document.getElementById('panel-' + meta.id);
     if (!panel) return;
     panel.innerHTML = buildPagePanel(meta);
     // Wire tab buttons
-    panel.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+    panel.querySelectorAll('.tab-btn').forEach(btn =>{
+      btn.addEventListener('click', () =>{
         const tabId = btn.dataset.tab;
-        panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        panel.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        panel.querySelectorAll('.tab-btn').forEach(b =>b.classList.remove('active'));
+        panel.querySelectorAll('.tab-pane').forEach(p =>p.classList.remove('active'));
         btn.classList.add('active');
         panel.querySelector('#' + tabId)?.classList.add('active');
       });
@@ -837,16 +837,16 @@ function buildAllPagePanels() {
 function buildPagePanel(m) {
   const p = m.id;
   const tabs = [
-    { key:'entete',    label:'En-tête' },
-    { key:'boutique',  label:'Boutique' },
-    { key:'pres',      label:'Présentation' },
-    { key:'galerie',   label:'📸 Galerie' },
-    { key:'actu',      label:'Actualités' },
-    { key:'cta',       label:'CTA' },
+    { key:'entete', label:'En-tête' },
+    { key:'boutique', label:'Boutique' },
+    { key:'pres', label:'Présentation' },
+    { key:'galerie', label:'Galerie' },
+    { key:'actu', label:'Actualités' },
+    { key:'cta', label:'CTA' },
   ];
   return `
     <div class="tabs-nav">
-      ${tabs.map((t,i) => `<button class="tab-btn${i===0?' active':''}" data-tab="${p}-${t.key}">${t.label}</button>`).join('')}
+      ${tabs.map((t,i) =>`<button class="tab-btn${i===0?' active':''}" data-tab="${p}-${t.key}">${t.label}</button>`).join('')}
     </div>
 
     <!-- EN-TETE -->
@@ -854,19 +854,19 @@ function buildPagePanel(m) {
       <div class="form-section">
         <div class="section-head"><span>${m.icon}</span><span class="section-head-title">En-tête de page</span></div>
         <div class="section-body">
-          <div class="fg"><label>Tag / étiquette hero</label><input class="fi" id="${p}_hero_tag" placeholder="ex: 🍽️ SECTEUR 06"></div>
+          <div class="fg"><label>Tag / étiquette hero</label><input class="fi" id="${p}_hero_tag" placeholder="ex: SECTEUR 06"></div>
           <div class="fg"><label>Titre de la page (h1)</label><input class="fi" id="${p}_hero_title" placeholder="${m.label}"></div>
           <div class="fg"><label>Description sous le titre</label><textarea class="fi" id="${p}_hero_desc"></textarea></div>
         </div>
       </div>
       <div class="form-section">
-        <div class="section-head"><span>📝</span><span class="section-head-title">Section présentation</span></div>
+        <div class="section-head"><span></span><span class="section-head-title">Section présentation</span></div>
         <div class="section-body">
           <div class="fg"><label>Tag de section</label><input class="fi" id="${p}_intro_tag" placeholder="Nos prestations"></div>
           <div class="fg"><label>Titre (h2)</label><input class="fi" id="${p}_intro_h2"></div>
           <div class="fg"><label>Paragraphe</label><textarea class="fi" style="min-height:90px" id="${p}_intro_p"></textarea></div>
           <div class="fg"><label>Texte du bouton CTA</label><input class="fi" id="${p}_intro_cta" placeholder="Demander un devis"></div>
-          ${m.checks.map((ch,i) => `<div class="fg"><label>✔ Point ${i+1}</label><input class="fi" id="${p}_check${i+1}" placeholder="${ch}"></div>`).join('')}
+          ${m.checks.map((ch,i) =>`<div class="fg"><label>Point ${i+1}</label><input class="fi" id="${p}_check${i+1}" placeholder="${ch}"></div>`).join('')}
         </div>
       </div>
     </div>
@@ -874,7 +874,7 @@ function buildPagePanel(m) {
     <!-- BOUTIQUE -->
     <div id="${p}-boutique" class="tab-pane">
       <div class="form-section">
-        <div class="section-head"><span>🛒</span><span class="section-head-title">Section boutique</span><span id="${p}-cards-badge" class="badge-pill">0 cartes</span></div>
+        <div class="section-head"><span></span><span class="section-head-title">Section boutique</span><span id="${p}-cards-badge" class="badge-pill">0 cartes</span></div>
         <div class="section-body">
           <div class="fg row2">
             <div><label>Tag de section</label><input class="fi" id="${p}_shop_tag" placeholder="Boutique ${m.label}"></div>
@@ -891,7 +891,7 @@ function buildPagePanel(m) {
     <!-- PRESENTATION -->
     <div id="${p}-pres" class="tab-pane">
       <div class="form-section">
-        <div class="section-head"><span>🏢</span><span class="section-head-title">Textes de présentation</span></div>
+        <div class="section-head"><span></span><span class="section-head-title">Textes de présentation</span></div>
         <div class="section-body">
           <div class="fg row2">
             <div><label>Tag de section</label><input class="fi" id="${p}_pres_tag" placeholder="Notre activité"></div>
@@ -900,9 +900,9 @@ function buildPagePanel(m) {
           <div class="fg"><label>Paragraphe 1</label><textarea class="fi" style="min-height:90px" id="${p}_pres_p1"></textarea></div>
           <div class="fg"><label>Paragraphe 2</label><textarea class="fi" style="min-height:90px" id="${p}_pres_p2"></textarea></div>
           <div class="highlights-editor">
-            ${[1,2,3].map(n => `<div class="highlight-ed">
+            ${[1,2,3].map(n =>`<div class="highlight-ed">
               <div class="card-ed-num">Point fort ${n}</div>
-              <div class="fg"><label>Icône (emoji)</label><input class="fi" id="${p}_ph${n}_icon" placeholder="🎯"></div>
+              <div class="fg"><label>Icône (emoji)</label><input class="fi" id="${p}_ph${n}_icon" placeholder=""></div>
               <div class="fg"><label>Titre</label><input class="fi" id="${p}_ph${n}_title" placeholder="Titre du point"></div>
               <div class="fg"><label>Description</label><textarea class="fi" id="${p}_ph${n}_text" placeholder="Description..."></textarea></div>
             </div>`).join('')}
@@ -910,16 +910,16 @@ function buildPagePanel(m) {
         </div>
       </div>
       <div class="form-section">
-        <div class="section-head"><span>👥</span><span class="section-head-title">Photos de l'équipe</span><span class="badge-pill">3 portraits</span></div>
+        <div class="section-head"><span></span><span class="section-head-title">Photos de l'équipe</span><span class="badge-pill">3 portraits</span></div>
         <div class="section-body">
-          <div class="info-box">📤 Photos portrait (format vertical recommandé). Cliquez ou glissez une photo. Taille max : 3 Mo.</div>
+          <div class="info-box">Photos portrait (format vertical recommandé). Cliquez ou glissez une photo. Taille max : 3 Mo.</div>
           <div class="gallery-upload-grid">
-            ${[1,2,3].map(n => `<div class="upload-slot" data-img-key="${p}_team_${n}">
+            ${[1,2,3].map(n =>`<div class="upload-slot" data-img-key="${p}_team_${n}">
               <div class="upload-zone" id="uz-${p}-team-${n}" style="aspect-ratio:3/4">
                 <img class="uz-preview" alt="">
-                <div class="uz-empty"><div class="uz-icon">👤</div><p>Photo équipe ${n}<br>ou <strong>cliquer</strong></p></div>
+                <div class="uz-empty"><div class="uz-icon"></div><p>Photo équipe ${n}<br>ou <strong>cliquer</strong></p></div>
                 <input type="file" class="uz-input" accept="image/*">
-                <button class="uz-delete">🗑️ Suppr.</button>
+                <button class="uz-delete">Suppr.</button>
               </div>
               <div class="fg"><label>Nom / poste</label><input class="fi" id="${p}_team${n}_caption" placeholder="Prénom Nom — Directeur"></div>
             </div>`).join('')}
@@ -927,16 +927,16 @@ function buildPagePanel(m) {
         </div>
       </div>
       <div class="form-section">
-        <div class="section-head"><span>🏢</span><span class="section-head-title">Photos de l'établissement</span><span class="badge-pill">3 photos</span></div>
+        <div class="section-head"><span></span><span class="section-head-title">Photos de l'établissement</span><span class="badge-pill">3 photos</span></div>
         <div class="section-body">
-          <div class="info-box">📤 Photos de vos locaux, ateliers ou espaces. Format paysage recommandé. Taille max : 3 Mo.</div>
+          <div class="info-box">Photos de vos locaux, ateliers ou espaces. Format paysage recommandé. Taille max : 3 Mo.</div>
           <div class="gallery-upload-grid">
-            ${[1,2,3].map(n => `<div class="upload-slot" data-img-key="${p}_estab_${n}">
+            ${[1,2,3].map(n =>`<div class="upload-slot" data-img-key="${p}_estab_${n}">
               <div class="upload-zone" id="uz-${p}-estab-${n}">
                 <img class="uz-preview" alt="">
-                <div class="uz-empty"><div class="uz-icon">🏢</div><p>Établissement ${n}<br>ou <strong>cliquer</strong></p></div>
+                <div class="uz-empty"><div class="uz-icon"></div><p>Établissement ${n}<br>ou <strong>cliquer</strong></p></div>
                 <input type="file" class="uz-input" accept="image/*">
-                <button class="uz-delete">🗑️ Suppr.</button>
+                <button class="uz-delete">Suppr.</button>
               </div>
               <div class="fg"><label>Légende</label><input class="fi" id="${p}_estab${n}_caption" placeholder="Vue de nos locaux"></div>
             </div>`).join('')}
@@ -948,26 +948,26 @@ function buildPagePanel(m) {
     <!-- GALERIE -->
     <div id="${p}-galerie" class="tab-pane">
       <div class="form-section">
-        <div class="section-head"><span>📸</span><span class="section-head-title">Galerie photos</span><span class="badge-pill">6 photos</span></div>
+        <div class="section-head"><span></span><span class="section-head-title">Galerie photos</span><span class="badge-pill">6 photos</span></div>
         <div class="section-body">
           <div class="fg row2">
             <div><label>Tag de section</label><input class="fi" id="${p}_gal_tag" placeholder="Galerie"></div>
             <div><label>Titre (h2)</label><input class="fi" id="${p}_gal_h2" placeholder="Nos réalisations en images"></div>
           </div>
-          <div class="info-box">📤 Cliquez ou glissez une photo sur chaque emplacement. Les photos sont sauvegardées automatiquement. Taille max : 2 Mo par photo.</div>
+          <div class="info-box">Cliquez ou glissez une photo sur chaque emplacement. Les photos sont sauvegardées automatiquement. Taille max : 2 Mo par photo.</div>
           <div class="gallery-upload-grid">
-            ${m.galDef.map((cap,i) => {
+            ${m.galDef.map((cap,i) =>{
               const n = i+1;
               const key = p + '_' + n;
               return `<div class="upload-slot" data-img-key="${key}">
                 <div class="upload-zone" id="uz-${p}-${n}">
                   <img class="uz-preview" alt="">
                   <div class="uz-empty">
-                    <div class="uz-icon">📷</div>
+                    <div class="uz-icon"></div>
                     <p>Glisser une photo<br>ou <strong>cliquer</strong></p>
                   </div>
                   <input type="file" class="uz-input" accept="image/*">
-                  <button class="uz-delete">🗑️ Suppr.</button>
+                  <button class="uz-delete">Suppr.</button>
                 </div>
                 <div class="fg">
                   <label>Légende photo ${n}</label>
@@ -983,14 +983,14 @@ function buildPagePanel(m) {
     <!-- ACTUALITES -->
     <div id="${p}-actu" class="tab-pane">
       <div class="form-section">
-        <div class="section-head"><span>📰</span><span class="section-head-title">Actualités</span><span class="badge-pill">3 articles</span></div>
+        <div class="section-head"><span></span><span class="section-head-title">Actualités</span><span class="badge-pill">3 articles</span></div>
         <div class="section-body">
           <div class="fg row2">
             <div><label>Tag de section</label><input class="fi" id="${p}_news_tag" placeholder="Actualités"></div>
             <div><label>Titre (h2)</label><input class="fi" id="${p}_news_h2" placeholder="Nos dernières nouvelles"></div>
           </div>
           <div class="news-editor">
-            ${m.newsDef.map((a,i) => {
+            ${m.newsDef.map((a,i) =>{
               const n = i+1;
               return `<div class="news-card-ed">
                 <div class="news-card-num">Article ${n}</div>
@@ -1009,7 +1009,7 @@ function buildPagePanel(m) {
     <!-- CTA -->
     <div id="${p}-cta" class="tab-pane">
       <div class="form-section">
-        <div class="section-head"><span>📣</span><span class="section-head-title">Section appel à l'action (CTA)</span></div>
+        <div class="section-head"><span></span><span class="section-head-title">Section appel à l'action (CTA)</span></div>
         <div class="section-body">
           <div class="fg"><label>Titre (h2)</label><input class="fi" id="${p}_cta_h2" placeholder="Contactez-nous dès aujourd'hui"></div>
           <div class="fg"><label>Paragraphe</label><textarea class="fi" id="${p}_cta_p" placeholder="Obtenez votre devis gratuit sous 24 heures."></textarea></div>
@@ -1020,7 +1020,7 @@ function buildPagePanel(m) {
 
     <!-- ACTIONS BAR -->
     <div class="actions-bar">
-      <button class="btn-save" onclick="savePageSection('${p}')">💾 Sauvegarder toute la page</button>
+      <button class="btn-save" onclick="savePageSection('${p}')">Sauvegarder toute la page</button>
       <button class="btn-danger" onclick="resetPageSection('${p}')">Réinitialiser</button>
       <a href="${m.href}" target="_blank" class="btn-link">↗ Voir la page</a>
     </div>`;
@@ -1030,12 +1030,12 @@ function buildPagePanel(m) {
    DYNAMIC SHOP EDITOR
 ===================================================== */
 function initShopEditors() {
-  PAGE_META.forEach(meta => initShopEditor(meta.id, meta));
+  PAGE_META.forEach(meta =>initShopEditor(meta.id, meta));
 }
 
 function initShopEditor(page, meta) {
-  const d    = getData();
-  const raw  = d[page + '_shop_count'];
+  const d = getData();
+  const raw = d[page + '_shop_count'];
   const count = raw ? parseInt(raw) : (meta ? meta.cardDef.length : 6);
   const container = document.getElementById(page + '-cards-editor');
   if (!container) return;
@@ -1048,10 +1048,10 @@ function initShopEditor(page, meta) {
 }
 
 function makeCardEdHTML(page, n, d, def) {
-  const v = k => (d && d[`${page}_c${n}_${k}`]) || '';
-  const ph = k => (def && def[k]) || '';
+  const v = k =>(d && d[`${page}_c${n}_${k}`]) || '';
+  const ph = k =>(def && def[k]) || '';
   return `<div class="card-ed" id="card-ed-${page}-${n}">
-    <div class="card-ed-num">Carte ${n}<button type="button" class="btn-del-card" onclick="removeShopCard('${page}',${n})">✕ Suppr.</button></div>
+    <div class="card-ed-num">Carte ${n}<button type="button" class="btn-del-card" onclick="removeShopCard('${page}',${n})">Suppr.</button></div>
     <div class="fg"><label>Icone (emoji)</label><input class="fi" id="${page}_c${n}_icon" value="${v('icon')}" placeholder="${ph('icon')}"></div>
     <div class="fg"><label>Nom</label><input class="fi" id="${page}_c${n}_name" value="${v('name')}" placeholder="${ph('name')}"></div>
     <div class="fg"><label>Description</label><textarea class="fi" id="${page}_c${n}_desc" placeholder="${ph('desc')}">${v('desc')}</textarea></div>
@@ -1062,10 +1062,10 @@ function makeCardEdHTML(page, n, d, def) {
 
 function updateCardsBadge(page) {
   const container = document.getElementById(page + '-cards-editor');
-  const badge     = document.getElementById(page + '-cards-badge');
+  const badge = document.getElementById(page + '-cards-badge');
   if (!container || !badge) return;
   const n = container.querySelectorAll('.card-ed').length;
-  badge.textContent = n + (n > 1 ? ' cartes' : ' carte');
+  badge.textContent = n + (n >1 ? ' cartes' : ' carte');
 }
 
 function addShopCard(page) {
@@ -1085,29 +1085,29 @@ function removeShopCard(page, n) {
   }
 
   // Collect all current values before renumbering
-  const allCards = Array.from(container.querySelectorAll('.card-ed')).map((el, idx) => {
+  const allCards = Array.from(container.querySelectorAll('.card-ed')).map((el, idx) =>{
     const i = idx + 1;
-    const get = k => document.getElementById(`${page}_c${i}_${k}`)?.value || '';
+    const get = k =>document.getElementById(`${page}_c${i}_${k}`)?.value || '';
     return { icon: get('icon'), name: get('name'), desc: get('desc'), price: get('price'), btn: get('btn') };
   });
   allCards.splice(n - 1, 1); // remove the nth card (1-based)
 
   // Persist: clear old keys then write renumbered data
   const d = getData();
-  Object.keys(d).filter(k => k.startsWith(`${page}_c`) && /^[a-z]+_c\d+_/.test(k)).forEach(k => delete d[k]);
+  Object.keys(d).filter(k =>k.startsWith(`${page}_c`) && /^[a-z]+_c\d+_/.test(k)).forEach(k =>delete d[k]);
   d[page + '_shop_count'] = String(allCards.length);
-  allCards.forEach((c, idx) => {
+  allCards.forEach((c, idx) =>{
     const i = idx + 1;
-    if (c.icon)  d[`${page}_c${i}_icon`]  = c.icon;
-    if (c.name)  d[`${page}_c${i}_name`]  = c.name;
-    if (c.desc)  d[`${page}_c${i}_desc`]  = c.desc;
+    if (c.icon) d[`${page}_c${i}_icon`] = c.icon;
+    if (c.name) d[`${page}_c${i}_name`] = c.name;
+    if (c.desc) d[`${page}_c${i}_desc`] = c.desc;
     if (c.price) d[`${page}_c${i}_price`] = c.price;
-    if (c.btn)   d[`${page}_c${i}_btn`]   = c.btn;
+    if (c.btn) d[`${page}_c${i}_btn`] = c.btn;
   });
   localStorage.setItem(DATA_KEY, JSON.stringify(d));
 
   // Rebuild editor
-  const meta = PAGE_META.find(m => m.id === page);
+  const meta = PAGE_META.find(m =>m.id === page);
   initShopEditor(page, meta);
   toast('Carte supprimée.', 'success');
 }
@@ -1116,11 +1116,11 @@ function removeShopCard(page, n) {
    PHOTO UPLOAD
 ===================================================== */
 function initAllPhotoUploads() {
-  document.querySelectorAll('.upload-slot').forEach(slot => {
+  document.querySelectorAll('.upload-slot').forEach(slot =>{
     const imgKey = slot.dataset.imgKey;
-    const zone   = slot.querySelector('.upload-zone');
-    const input  = slot.querySelector('.uz-input');
-    const del    = slot.querySelector('.uz-delete');
+    const zone = slot.querySelector('.upload-zone');
+    const input = slot.querySelector('.uz-input');
+    const del = slot.querySelector('.uz-delete');
     if (!zone || !imgKey) return;
 
     // Load existing image
@@ -1128,20 +1128,20 @@ function initAllPhotoUploads() {
     if (stored) uzShow(zone, stored);
 
     // Click on zone → open file picker
-    zone.addEventListener('click', e => {
+    zone.addEventListener('click', e =>{
       if (del.contains(e.target)) return;
       input.click();
     });
 
     // File selected via picker
-    input.addEventListener('change', () => {
+    input.addEventListener('change', () =>{
       if (input.files[0]) processPhoto(input.files[0], imgKey, zone);
     });
 
     // Drag events
-    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-    zone.addEventListener('drop', e => {
+    zone.addEventListener('dragover', e =>{ e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () =>zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e =>{
       e.preventDefault();
       zone.classList.remove('drag-over');
       const f = e.dataTransfer.files[0];
@@ -1149,29 +1149,29 @@ function initAllPhotoUploads() {
     });
 
     // Delete
-    del.addEventListener('click', e => {
+    del.addEventListener('click', e =>{
       e.stopPropagation();
       localStorage.removeItem(IMG_PFX + imgKey);
       input.value = '';
       uzHide(zone);
-      toast('🗑️ Photo supprimée.', 'success');
+      toast('Photo supprimée.', 'success');
     });
   });
 }
 
 function processPhoto(file, imgKey, zone) {
-  if (file.size > 3 * 1024 * 1024) {
-    toast('⚠️ Image trop lourde (max 3 Mo). Compressez-la avant de l\'importer.', 'error');
+  if (file.size >3 * 1024 * 1024) {
+    toast('Image trop lourde (max 3 Mo). Compressez-la avant de l\'importer.', 'error');
     return;
   }
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = e =>{
     try {
       localStorage.setItem(IMG_PFX + imgKey, e.target.result);
       uzShow(zone, e.target.result);
-      toast('✅ Photo enregistrée !', 'success');
+      toast('Photo enregistrée !', 'success');
     } catch {
-      toast('⚠️ Stockage plein. Supprimez des photos ou compressez davantage.', 'error');
+      toast('Stockage plein. Supprimez des photos ou compressez davantage.', 'error');
     }
   };
   reader.readAsDataURL(file);
@@ -1198,18 +1198,18 @@ function uzHide(zone) {
 ===================================================== */
 function loadAllFields() {
   const d = getData();
-  document.querySelectorAll('input.fi, textarea.fi').forEach(el => {
+  document.querySelectorAll('input.fi, textarea.fi').forEach(el =>{
     if (el.id && d[el.id] !== undefined) el.value = d[el.id];
   });
   // Theme
   const t = JSON.parse(localStorage.getItem(THEME_KEY) || '{}');
   if (t.bleu) document.getElementById('t_bleu').value = t.bleu;
-  if (t.or)   document.getElementById('t_or').value   = t.or;
+  if (t.or) document.getElementById('t_or').value = t.or;
 }
 
 function savePageSection(page) {
   const updates = {};
-  document.querySelectorAll(`input.fi[id^="${page}_"], textarea.fi[id^="${page}_"]`).forEach(el => {
+  document.querySelectorAll(`input.fi[id^="${page}_"], textarea.fi[id^="${page}_"]`).forEach(el =>{
     if (el.value.trim()) updates[el.id] = el.value.trim();
   });
   // Save dynamic shop card count
@@ -1218,23 +1218,23 @@ function savePageSection(page) {
     updates[page + '_shop_count'] = String(shopContainer.querySelectorAll('.card-ed').length);
   }
   mergeData(updates);
-  toast(`✅ Page "${PANEL_TITLES['page_' + page] || page}" sauvegardée !`, 'success');
+  toast(`Page "${PANEL_TITLES['page_' + page] || page}" sauvegardée !`, 'success');
 }
 
 function saveSection(prefix) {
   const updates = {};
   if (prefix === 'contact') {
-    document.querySelectorAll('input[id^="c_"], textarea[id^="c_"]').forEach(el => {
+    document.querySelectorAll('input[id^="c_"], textarea[id^="c_"]').forEach(el =>{
       const key = el.id.replace('c_', 'global_');
       if (el.value.trim()) updates[key] = el.value.trim();
     });
   } else {
-    document.querySelectorAll(`input.fi[id^="${prefix}_"], textarea.fi[id^="${prefix}_"]`).forEach(el => {
+    document.querySelectorAll(`input.fi[id^="${prefix}_"], textarea.fi[id^="${prefix}_"]`).forEach(el =>{
       if (el.value.trim()) updates[el.id] = el.value.trim();
     });
   }
   mergeData(updates);
-  toast(`✅ "${PANEL_TITLES[prefix] || prefix}" sauvegardé !`, 'success');
+  toast(` "${PANEL_TITLES[prefix] || prefix}" sauvegardé !`, 'success');
 }
 
 function resetPageSection(prefix) {
@@ -1246,22 +1246,22 @@ function resetPageSection(prefix) {
     localStorage.removeItem(IMG_PFX + prefix + '_team_' + i);
     localStorage.removeItem(IMG_PFX + prefix + '_estab_' + i);
   }
-  document.querySelectorAll(`.upload-slot[data-img-key^="${prefix}_"]`).forEach(slot => {
+  document.querySelectorAll(`.upload-slot[data-img-key^="${prefix}_"]`).forEach(slot =>{
     uzHide(slot.querySelector('.upload-zone'));
     slot.querySelector('.uz-input').value = '';
   });
   // Rebuild shop editor with defaults
-  const meta = PAGE_META.find(m => m.id === prefix);
+  const meta = PAGE_META.find(m =>m.id === prefix);
   initShopEditor(prefix, meta);
   loadAllFields();
-  toast(`🔄 Page "${prefix}" réinitialisée.`, 'success');
+  toast(`Page "${prefix}" réinitialisée.`, 'success');
 }
 
 function resetSection(prefix) {
   if (!confirm(`Réinitialiser le contenu de "${prefix}" ? Action irréversible.`)) return;
   clearPrefix(prefix);
   loadAllFields();
-  toast(`🔄 "${prefix}" réinitialisé.`, 'success');
+  toast(` "${prefix}" réinitialisé.`, 'success');
 }
 
 /* =====================================================
@@ -1269,24 +1269,24 @@ function resetSection(prefix) {
 ===================================================== */
 function saveTheme() {
   const bleu = document.getElementById('t_bleu').value;
-  const or   = document.getElementById('t_or').value;
+  const or = document.getElementById('t_or').value;
   localStorage.setItem(THEME_KEY, JSON.stringify({ bleu, or }));
-  toast('✅ Thème appliqué ! Rechargez les pages pour voir les changements.', 'success');
+  toast('Thème appliqué ! Rechargez les pages pour voir les changements.', 'success');
 }
 
 function resetTheme() {
   if (!confirm('Réinitialiser le thème aux couleurs d\'origine ?')) return;
   localStorage.removeItem(THEME_KEY);
   document.getElementById('t_bleu').value = '#0f2a4a';
-  document.getElementById('t_or').value   = '#e8a813';
+  document.getElementById('t_or').value = '#e8a813';
   updateThemePreview();
-  toast('🔄 Thème réinitialisé.', 'success');
+  toast('Thème réinitialisé.', 'success');
 }
 
 function updateThemePreview() {
   const bleu = document.getElementById('t_bleu')?.value || '#0f2a4a';
-  const or   = document.getElementById('t_or')?.value   || '#e8a813';
-  const p    = document.getElementById('theme-preview');
+  const or = document.getElementById('t_or')?.value || '#e8a813';
+  const p = document.getElementById('theme-preview');
   if (p) { p.style.background = bleu; p.style.color = or; }
 }
 
@@ -1298,34 +1298,34 @@ document.getElementById('t_or')?.addEventListener('input', updateThemePreview);
 ===================================================== */
 async function changePassword() {
   const old = document.getElementById('s_old').value;
-  const nw  = document.getElementById('s_new').value;
+  const nw = document.getElementById('s_new').value;
   const nw2 = document.getElementById('s_new2').value;
   const err = document.getElementById('s-pwd-err');
   if (await sha256(old) !== localStorage.getItem(HASH_KEY)) { showErr(err,'Mot de passe actuel incorrect.'); return; }
-  if (nw.length < 8)  { showErr(err,'Le nouveau mot de passe doit contenir au moins 8 caractères.'); return; }
-  if (nw !== nw2)     { showErr(err,'Les deux nouveaux mots de passe ne correspondent pas.'); return; }
+  if (nw.length < 8) { showErr(err,'Le nouveau mot de passe doit contenir au moins 8 caractères.'); return; }
+  if (nw !== nw2) { showErr(err,'Les deux nouveaux mots de passe ne correspondent pas.'); return; }
   err.classList.remove('show');
   localStorage.setItem(HASH_KEY, await sha256(nw));
-  ['s_old','s_new','s_new2'].forEach(id => document.getElementById(id).value = '');
-  toast('✅ Mot de passe mis à jour avec succès !', 'success');
+  ['s_old','s_new','s_new2'].forEach(id =>document.getElementById(id).value = '');
+  toast('Mot de passe mis à jour avec succès !', 'success');
 }
 
 /* =====================================================
    RESET ALL
 ===================================================== */
 function resetAll() {
-  if (!confirm('⚠️ Supprimer TOUT le contenu personnalisé, TOUTES les photos et le thème ?\nAction irréversible.')) return;
+  if (!confirm('Supprimer TOUT le contenu personnalisé, TOUTES les photos et le thème ?\nAction irréversible.')) return;
   localStorage.removeItem(DATA_KEY);
   localStorage.removeItem(THEME_KEY);
   // Remove all photos
-  Object.keys(localStorage).filter(k => k.startsWith(IMG_PFX)).forEach(k => localStorage.removeItem(k));
-  document.querySelectorAll('.upload-zone').forEach(z => uzHide(z));
-  document.querySelectorAll('.uz-input').forEach(i => i.value = '');
+  Object.keys(localStorage).filter(k =>k.startsWith(IMG_PFX)).forEach(k =>localStorage.removeItem(k));
+  document.querySelectorAll('.upload-zone').forEach(z =>uzHide(z));
+  document.querySelectorAll('.uz-input').forEach(i =>i.value = '');
   loadAllFields();
   document.getElementById('t_bleu').value = '#0f2a4a';
-  document.getElementById('t_or').value   = '#e8a813';
+  document.getElementById('t_or').value = '#e8a813';
   updateThemePreview();
-  toast('🔄 Tout le contenu a été réinitialisé.', 'success');
+  toast('Tout le contenu a été réinitialisé.', 'success');
 }
 
 /* =====================================================
@@ -1337,7 +1337,7 @@ function toast(msg, type='success') {
   el.textContent = msg;
   el.className = `toast ${type} show`;
   clearTimeout(_tt);
-  _tt = setTimeout(() => el.classList.remove('show'), 4500);
+  _tt = setTimeout(() =>el.classList.remove('show'), 4500);
 }
 
 function showErr(el, msg) { el.textContent = msg; el.classList.add('show'); }
