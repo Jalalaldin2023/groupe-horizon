@@ -162,7 +162,8 @@
 
   /* ─── LOGO ─── */
   function applyLogo() {
-    const src = localStorage.getItem('horizonImg_global_logo');
+    const src = localStorage.getItem(IMG_PFX + page + '_logo')
+             || localStorage.getItem(IMG_PFX + 'global_logo');
     if (!src) return;
     qa('.logo-img').forEach(img => { img.src = src; img.style.display = 'block'; });
     qa('.logo-text').forEach(el  => { el.style.display = 'none'; });

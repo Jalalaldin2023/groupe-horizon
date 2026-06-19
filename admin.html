@@ -874,6 +874,26 @@ function buildPagePanel(m) {
     <!-- EN-TETE -->
     <div id="${p}-entete" class="tab-pane active">
       <div class="form-section">
+        <div class="section-head"><span>${m.icon}</span><span class="section-head-title">Logo de la page</span></div>
+        <div class="section-body">
+          <div class="info-box">Logo propre à cette page (header + footer). Remplace le logo global. PNG fond transparent recommandé, hauteur 80-120 px, max 3 Mo.</div>
+          <div style="display:grid;grid-template-columns:210px 1fr;gap:1.2rem;align-items:start;margin-top:.75rem">
+            <div class="upload-slot" data-img-key="${p}_logo">
+              <div class="upload-zone" id="uz-${p}-logo" style="aspect-ratio:3/1">
+                <img class="uz-preview" alt="">
+                <div class="uz-empty">
+                  <div class="uz-icon" style="font-size:1.1rem;letter-spacing:1px">LOGO</div>
+                  <p>Logo ${m.label}<br>ou <strong>cliquer</strong></p>
+                </div>
+                <input type="file" class="uz-input" accept="image/*">
+                <button class="uz-delete">Suppr.</button>
+              </div>
+            </div>
+            <p style="font-size:.83rem;color:var(--gray-500);line-height:1.65;padding:.2rem 0">Si aucun logo n'est importé ici, le logo global (panneau Thème) est utilisé. Si aucun des deux n'est défini, le logo texte par défaut s'affiche.</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
         <div class="section-head"><span>${m.icon}</span><span class="section-head-title">En-tête de page</span></div>
         <div class="section-body">
           <div class="fg"><label>Tag / étiquette hero</label><input class="fi" id="${p}_hero_tag" placeholder="ex: SECTEUR 06"></div>
@@ -1262,7 +1282,8 @@ function saveSection(prefix) {
 function resetPageSection(prefix) {
   if (!confirm(`Réinitialiser toute la page "${prefix}" ?\n\nTextes ET photos seront effacés. Action irréversible.`)) return;
   clearPrefix(prefix);
-  // Clear gallery photos
+  // Clear page logo + gallery + team + estab photos
+  localStorage.removeItem(IMG_PFX + prefix + '_logo');
   for (let i = 1; i <= 20; i++) localStorage.removeItem(IMG_PFX + prefix + '_' + i);
   for (let i = 1; i <= 3; i++) {
     localStorage.removeItem(IMG_PFX + prefix + '_team_' + i);
