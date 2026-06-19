@@ -15,6 +15,9 @@
 
   const page = (location.pathname.split('/').pop() || 'index').replace('.html','') || 'index';
 
+  const waNum = (d.global_whatsapp || '').replace(/\D/g, '');
+  const waBase = waNum ? 'https://wa.me/' + waNum : '';
+
   document.addEventListener('DOMContentLoaded', () =>{
     if (page === 'index') applyAccueil();
     else applyPage(page);
@@ -22,6 +25,7 @@
     applyPresPhotos(page);
     applyContact();
     applyLogo();
+    if (waBase) applyWhatsApp();
   });
 
   /* ─── ACCUEIL ─── */
@@ -65,11 +69,12 @@
           const imgSrc = localStorage.getItem(IMG_PFX + p + '_shop_' + n);
           const card = document.createElement('div');
           card.className = 'shop-card reveal';
+          const waLink = waBase ? waBase+'?text='+encodeURIComponent('Bonjour, je suis intéressé par : '+name) : '#contact';
           card.innerHTML = (imgSrc ? '<div class="shop-card-img"><img src="'+imgSrc+'" alt="'+name+'"></div>' : '')
             + '<div class="shop-card-name">'+name+'</div>'
             + '<div class="shop-card-desc">'+desc+'</div>'
             + '<span class="shop-card-price'+(price?'':' devis')+'">'+(price||'Sur devis')+'</span>'
-            + '<a href="#contact" class="btn-sm">'+btn+'</a>';
+            + '<a href="'+waLink+'" class="btn-sm"'+(waBase?' target="_blank" rel="noopener"':'')+'>'+btn+'</a>';
           grid.appendChild(card);
         }
       }
@@ -156,7 +161,7 @@
         + '<div class="cat-name">'+name+'</div>'
         + '<div class="cat-desc">'+desc+'</div>'
         + (price ? '<div class="cat-price">'+price+'</div>' : '')
-        + '<a href="#contact" class="btn-sm">'+btn+'</a>'
+        + '<a href="'+(waBase ? waBase+'?text='+encodeURIComponent('Bonjour, je suis intéressé par : '+name) : '#contact')+'" class="btn-sm"'+(waBase?' target="_blank" rel="noopener"':'')+'>'+btn+'</a>'
         + '</div>';
       grid.appendChild(item);
     }
@@ -207,6 +212,17 @@
     img.src = src;
     img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
     ph.appendChild(img);
+  }
+
+  /* ─── WHATSAPP ─── */
+  function applyWhatsApp() {
+    document.querySelectorAll('[data-wa-btn]').forEach(btn => {
+      const card = btn.closest('.shop-card, .cat-item');
+      const name = card?.querySelector('.shop-card-name, .cat-name')?.textContent || '';
+      btn.href = waBase + '?text=' + encodeURIComponent('Bonjour, je suis intéressé par : ' + name);
+      btn.target = '_blank';
+      btn.rel = 'noopener';
+    });
   }
 
   /* ─── CONTACT ─── */
