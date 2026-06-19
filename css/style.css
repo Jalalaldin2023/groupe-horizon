@@ -412,19 +412,19 @@ img { max-width: 100%; }
   font-size: .75rem; font-weight: 700; color: var(--or-fonce);
   text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;
 }
-.pres-photo-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 2rem; }
+.pres-photo-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 2rem; max-width: 640px; }
 .pres-photo-item { text-align: center; }
 .pres-photo-placeholder {
   border-radius: 10px; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
-  background: var(--gris-clair); font-size: 2.5rem;
+  background: var(--gris-clair); font-size: 1.8rem;
   transition: transform .3s ease;
 }
 .pres-photo-placeholder:hover { transform: scale(1.02); }
-.pres-team-slot { aspect-ratio: 3/4; }
-.pres-estab-slot { aspect-ratio: 4/3; }
+.pres-team-slot { height: 160px; }
+.pres-estab-slot { height: 120px; }
 .pres-photo-placeholder img { width:100%; height:100%; object-fit:cover; display:block; }
-.pres-photo-caption { font-size: .82rem; color: var(--gris); margin-top: .5rem; font-weight: 600; }
+.pres-photo-caption { font-size: .78rem; color: var(--gris); margin-top: .4rem; font-weight: 600; }
 
 /* ===== GALERIE ===== */
 .galerie-section { background: var(--gris-clair); }
