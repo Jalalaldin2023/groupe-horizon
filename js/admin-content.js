@@ -75,7 +75,7 @@
         grid.innerHTML = '';
         for (const c of validCards) {
           const card = document.createElement('div');
-          card.className = 'shop-card reveal';
+          card.className = 'shop-card reveal visible';
           const waLink = waBase + '?text=' + encodeURIComponent('Bonjour, je suis intéressé par : ' + c.name);
           card.innerHTML = (c.imgSrc ? '<div class="shop-card-img"><img src="'+c.imgSrc+'" alt="'+c.name+'"></div>' : '')
             + '<div class="shop-card-name">'+c.name+'</div>'
@@ -160,7 +160,7 @@
       if (!name) continue;
       const imgSrc = localStorage.getItem(IMG_PFX + p + '_cat_' + n);
       const item = document.createElement('div');
-      item.className = 'cat-item';
+      item.className = 'cat-item reveal visible';
       item.innerHTML = '<div class="cat-img-wrap">'
         + (imgSrc ? '<img src="'+imgSrc+'" alt="'+name+'">'
                   : '<div class="cat-img-placeholder">Photo</div>')
