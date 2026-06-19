@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Admin — Groupe Horizon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy: #0f2a4a; --navy-dark: #0a1d33; --navy-light: #16395f;
+      --gold: #e8a813; --gold-dark: #c98e0a;
+      --white: #fff; --gray-50: #f8fafc; --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0; --gray-500: #64748b; --gray-700: #334155;
+      --green: #10b981; --red: #ef4444;
+      --radius: 12px; --shadow: 0 4px 24px rgba(0,0,0,.08);
+    }
+    body { font-family: 'Open Sans', sans-serif; background: var(--gray-100); color: var(--gray-700); line-height: 1.6; }
+    h1,h2,h3,h4,h5 { font-family: 'Montserrat', sans-serif; }
+
+    /* ====== AUTH ====== */
+    .auth-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-light) 100%);
+      padding: 2rem;
+    }
+    .auth-card {
+      background: var(--white); border-radius: 20px; padding: 3rem 2.5rem;
+      width: min(440px, 100%); box-shadow: 0 20px 60px rgba(0,0,0,.3); text-align: center;
+    }
+    .auth-logo { font-family: 'Montserrat',sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--navy); letter-spacing: 1px; }
+    .auth-logo span { color: var(--gold); }
+    .auth-badge {
+      display: inline-block; background: var(--gold); color: var(--navy-dark);
+      font-size: .72rem; font-weight: 700; padding: .2rem .8rem; border-radius: 50px;
+      letter-spacing: 1.5px; text-transform: uppercase; margin: .6rem 0 1.8rem;
+    }
+    .auth-title { font-size: 1.6rem; color: var(--navy); margin-bottom: .4rem; }
+    .auth-subtitle { color: var(--gray-500); font-size: .9rem; margin-bottom: 1.8rem; }
+    .auth-form { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
+    .auth-field label { display: block; font-size: .82rem; font-weight: 700; color: var(--navy); margin-bottom: .35rem; }
+    .auth-field input {
+      width: 100%; padding: .9rem 1.1rem; border: 2px solid var(--gray-200); border-radius: 10px;
+      font-family: inherit; font-size: .95rem; color: var(--navy); background: var(--gray-50);
+      transition: border-color .2s;
+    }
+    .auth-field input:focus { outline: none; border-color: var(--gold); background: var(--white); }
+    .auth-error {
+      background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px;
+      color: var(--red); font-size: .87rem; padding: .7rem 1rem; display: none;
+    }
+    .auth-error.show { display: block; }
+    .auth-btn {
+      background: var(--gold); color: var(--navy-dark); border: none; padding: 1rem;
+      border-radius: 10px; font-family: 'Montserrat',sans-serif; font-weight: 700;
+      font-size: 1rem; cursor: pointer; transition: background .2s, transform .1s; margin-top: .3rem;
+    }
+    .auth-btn:hover { background: var(--gold-dark); }
+    .auth-btn:active { transform: scale(.98); }
+
+    /* ====== APP LAYOUT ====== */
+    #admin-app { display: none; min-height: 100vh; }
+    #admin-app.active { display: flex; }
+
+    .sidebar {
+      width: 270px; min-height: 100vh; background: var(--navy-dark);
+      display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0;
+      z-index: 100; overflow-y: auto;
+    }
+    .sidebar-header { padding: 1.8rem 1.5rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .sidebar-logo { font-family: 'Montserrat',sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--white); letter-spacing: 1px; }
+    .sidebar-logo span { color: var(--gold); }
+    .sidebar-badge {
+      display: inline-block; background: rgba(232,168,19,.18); color: var(--gold);
+      border: 1px solid rgba(232,168,19,.35); font-size: .68rem; font-weight: 700;
+      padding: .18rem .65rem; border-radius: 50px; letter-spacing: 1px;
+      text-transform: uppercase; margin-top: .4rem;
+    }
+    .sidebar-nav { padding: .8rem 0; flex: 1; }
+    .nav-group-title {
+      font-size: .65rem; font-weight: 700; color: rgba(255,255,255,.3);
+      letter-spacing: 2px; text-transform: uppercase; padding: 1rem 1.5rem .3rem;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: .7rem; padding: .65rem 1.5rem;
+      color: rgba(255,255,255,.6); font-size: .88rem; font-weight: 600; cursor: pointer;
+      transition: all .2s; border-left: 3px solid transparent;
+    }
+    .nav-item:hover { color: var(--white); background: rgba(255,255,255,.05); }
+    .nav-item.active { color: var(--gold); background: rgba(232,168,19,.1); border-left-color: var(--gold); }
+    .nav-icon { font-size: 1.05rem; width: 20px; text-align: center; flex-shrink: 0; }
+    .sidebar-footer { padding: 1rem 1.5rem 1.5rem; border-top: 1px solid rgba(255,255,255,.08); }
+    .logout-btn {
+      display: flex; align-items: center; gap: .6rem; width: 100%;
+      background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.25);
+      color: #f87171; padding: .7rem 1rem; border-radius: 8px; cursor: pointer;
+      font-size: .87rem; font-weight: 600; font-family: inherit; transition: all .2s;
+    }
+    .logout-btn:hover { background: rgba(239,68,68,.2); }
+
+    .main-area { flex: 1; margin-left: 270px; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar {
+      background: var(--white); border-bottom: 1px solid var(--gray-200);
+      padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50; height: 62px;
+    }
+    .topbar-title { font-size: 1.15rem; font-weight: 700; color: var(--navy); }
+    .topbar-sub { font-size: .78rem; color: var(--gray-500); margin-top: .05rem; }
+    .visit-btn {
+      background: var(--navy); color: var(--white); border: none; padding: .55rem 1.2rem;
+      border-radius: 8px; font-family: inherit; font-size: .82rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .4rem;
+    }
+    .visit-btn:hover { background: var(--navy-light); }
+    .content-area { padding: 2rem; flex: 1; }
+
+    /* Panels */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* Dashboard */
+    .dash-welcome {
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+      border-radius: var(--radius); padding: 2rem 2.5rem; color: var(--white);
+      margin-bottom: 2rem; position: relative; overflow: hidden;
+    }
+    .dash-welcome::after {
+      content: '◆'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%);
+      font-size: 6rem; color: rgba(232,168,19,.12);
+    }
+    .dash-welcome h2 { font-size: 1.5rem; color: var(--white); margin-bottom: .3rem; }
+    .dash-welcome p { color: rgba(255,255,255,.6); font-size: .9rem; }
+    .dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 1rem; }
+    .dash-card {
+      background: var(--white); border-radius: var(--radius); padding: 1.4rem;
+      border: 1px solid var(--gray-200); cursor: pointer; transition: all .2s; text-align: center;
+    }
+    .dash-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--gold); }
+    .dash-icon { font-size: 2rem; margin-bottom: .5rem; }
+    .dash-name { font-size: .88rem; font-weight: 700; color: var(--navy); }
+    .dash-status { font-size: .74rem; color: var(--gray-500); margin-top: .25rem; }
+    .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-right: 3px; }
+
+    /* Form sections */
+    .form-section {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--gray-200); margin-bottom: 1.5rem; overflow: hidden;
+    }
+    .section-head {
+      padding: 1rem 1.5rem; background: var(--gray-50); border-bottom: 1px solid var(--gray-200);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .section-head-title { font-size: .93rem; font-weight: 700; color: var(--navy); }
+    .badge-pill {
+      background: rgba(232,168,19,.15); color: var(--gold-dark);
+      font-size: .68rem; font-weight: 700; padding: .15rem .6rem; border-radius: 50px;
+    }
+    .section-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .fg { display: flex; flex-direction: column; gap: .35rem; }
+    .fg.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .fg.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .fg label { font-size: .8rem; font-weight: 700; color: var(--navy); }
+    .fg .hint { font-size: .73rem; color: var(--gray-500); }
+    .fi, textarea.fi {
+      width: 100%; padding: .72rem .95rem; border: 1.5px solid var(--gray-200); border-radius: 8px;
+      font-family: inherit; font-size: .9rem; color: var(--navy); background: var(--gray-50);
+      transition: border-color .2s, background .2s; resize: vertical;
+    }
+    .fi:focus, textarea.fi:focus { outline: none; border-color: var(--gold); background: var(--white); }
+    textarea.fi { min-height: 78px; }
+    input[type="color"].fi { padding: .25rem; height: 44px; cursor: pointer; }
+
+    /* Card editors grid */
+    .cards-editor { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .card-ed {
+      border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 1rem;
+      background: var(--gray-50);
+    }
+    .card-ed-num { font-size: .7rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: .75rem; }
+    .card-ed .fg { gap: .25rem; margin-bottom: .5rem; }
+    .card-ed label { font-size: .76rem; }
+    .card-ed .fi, .card-ed textarea.fi { padding: .52rem .75rem; font-size: .83rem; }
+    .card-ed textarea.fi { min-height: 55px; }
+
+    /* Actions bar */
+    .actions-bar {
+      display: flex; align-items: center; gap: 1rem; padding: 1.5rem 0;
+      border-top: 1px solid var(--gray-200); margin-top: 1rem; flex-wrap: wrap;
+    }
+    .btn-save {
+      background: var(--gold); color: var(--navy-dark); border: none; padding: .78rem 1.8rem;
+      border-radius: 8px; font-family: 'Montserrat',sans-serif; font-weight: 700;
+      font-size: .9rem; cursor: pointer; transition: all .2s;
+    }
+    .btn-save:hover { background: var(--gold-dark); transform: translateY(-1px); }
+    .btn-danger {
+      background: transparent; color: var(--red); border: 1.5px solid currentColor;
+      padding: .72rem 1.4rem; border-radius: 8px; font-family: 'Montserrat',sans-serif;
+      font-weight: 700; font-size: .88rem; cursor: pointer; transition: all .2s;
+    }
+    .btn-danger:hover { background: rgba(239,68,68,.08); }
+    .btn-link {
+      background: var(--navy); color: var(--white); border: none; padding: .72rem 1.4rem;
+      border-radius: 8px; font-family: inherit; font-weight: 600; font-size: .85rem;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .4rem;
+    }
+    .btn-link:hover { background: var(--navy-light); }
+
+    /* Theme preview */
+    .theme-preview {
+      height: 90px; border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; font-weight: 700; font-size: .88rem; transition: background .3s;
+      margin-top: .5rem;
+    }
+
+    /* Danger zone */
+    .danger-zone { border: 1.5px solid rgba(239,68,68,.3); border-radius: var(--radius); padding: 1.5rem; background: rgba(239,68,68,.04); }
+    .danger-zone h4 { color: var(--red); margin-bottom: .4rem; font-size: .92rem; }
+    .danger-zone p { font-size: .85rem; color: var(--gray-500); margin-bottom: 1rem; }
+    .info-box {
+      background: rgba(232,168,19,.08); border: 1px solid rgba(232,168,19,.25);
+      border-radius: 8px; padding: .9rem 1.1rem; font-size: .85rem; color: var(--navy);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; background: var(--navy-dark); color: var(--white);
+      padding: .9rem 1.4rem; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,.25);
+      font-size: .88rem; font-weight: 600; z-index: 9999;
+      transform: translateY(100px); opacity: 0; transition: all .3s ease;
+      display: flex; align-items: center; gap: .5rem; max-width: 360px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 4px solid var(--green); }
+    .toast.error   { border-left: 4px solid var(--red); }
+
+    /* ====== TABS ====== */
+    .tabs-nav {
+      display: flex; gap: .4rem; flex-wrap: wrap;
+      background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius);
+      padding: .8rem 1rem; margin-bottom: 1.2rem;
+    }
+    .tab-btn {
+      background: var(--gray-100); border: 1.5px solid var(--gray-200); color: var(--gray-700);
+      padding: .48rem 1rem; border-radius: 8px; font-family: 'Montserrat',sans-serif;
+      font-size: .78rem; font-weight: 700; cursor: pointer; transition: all .2s; white-space: nowrap;
+    }
+    .tab-btn:hover { border-color: var(--gold); color: var(--navy); }
+    .tab-btn.active { background: var(--gold); border-color: var(--gold-dark); color: var(--navy-dark); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ====== PHOTO UPLOAD ====== */
+    .gallery-upload-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+    .upload-slot { display: flex; flex-direction: column; gap: .6rem; }
+    .upload-zone {
+      position: relative; border: 2px dashed var(--gray-200); border-radius: 12px;
+      aspect-ratio: 4/3; cursor: pointer; overflow: hidden;
+      transition: border-color .2s, background .2s;
+      background: var(--gray-50);
+    }
+    .upload-zone:hover { border-color: var(--gold); background: rgba(232,168,19,.04); }
+    .upload-zone.drag-over { border-color: var(--gold); background: rgba(232,168,19,.12); border-style: solid; }
+    .uz-preview {
+      width: 100%; height: 100%; object-fit: cover;
+      display: none; position: absolute; inset: 0;
+    }
+    .uz-empty {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: .4rem;
+      color: var(--gray-500); text-align: center; font-size: .8rem; pointer-events: none;
+      padding: .5rem;
+    }
+    .uz-icon { font-size: 2rem; line-height: 1; }
+    .uz-input { display: none; }
+    .uz-delete {
+      position: absolute; top: .45rem; right: .45rem;
+      background: rgba(239,68,68,.9); color: white; border: none;
+      border-radius: 6px; padding: .28rem .5rem; cursor: pointer; font-size: .72rem;
+      z-index: 10; display: none; align-items: center; gap: .2rem; font-weight: 700;
+    }
+    .uz-delete:hover { background: var(--red); }
+    .uz-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,.5));
+      color: white; font-size: .72rem; padding: .6rem .5rem .4rem; text-align: center;
+      display: none; pointer-events: none;
+    }
+    .upload-zone.has-img .uz-label { display: block; }
+
+    /* News cards editor */
+    .news-editor { display: flex; flex-direction: column; gap: 1rem; }
+    .news-card-ed {
+      border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 1rem;
+      background: var(--gray-50);
+    }
+    .news-card-num { font-size: .7rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: .75rem; }
+
+    /* Highlights editor */
+    .highlights-editor { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .highlight-ed {
+      border: 1.5px solid var(--gray-200); border-radius: 10px; padding: 1rem;
+      background: var(--gray-50);
+    }
+    .highlight-ed .card-ed-num { font-size: .7rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: .75rem; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar { width: 230px; }
+      .main-area { margin-left: 230px; }
+      .cards-editor { grid-template-columns: 1fr 1fr; }
+      .fg.row3 { grid-template-columns: 1fr 1fr; }
+      .gallery-upload-grid { grid-template-columns: 1fr 1fr; }
+      .highlights-editor { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 680px) {
+      .sidebar { display: none; }
+      .main-area { margin-left: 0; }
+      .cards-editor, .gallery-upload-grid, .highlights-editor { grid-template-columns: 1fr; }
+      .fg.row2, .fg.row3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== SETUP ===== -->
+<div id="setup-screen" class="auth-screen" style="display:none">
+  <div class="auth-card">
+    <div class="auth-logo">GROUPE <span>HORIZON</span></div>
+    <div class="auth-badge">⚡ Super Admin</div>
+    <h2 class="auth-title">Première connexion</h2>
+    <p class="auth-subtitle">Définissez votre mot de passe administrateur. Il sera exigé à chaque connexion.</p>
+    <form class="auth-form" id="setup-form">
+      <div class="auth-field">
+        <label>Mot de passe (8 caractères minimum)</label>
+        <input type="password" id="s-pwd" placeholder="Choisissez un mot de passe fort" autocomplete="new-password">
+      </div>
+      <div class="auth-field">
+        <label>Confirmer le mot de passe</label>
+        <input type="password" id="s-pwd2" placeholder="Répétez le mot de passe" autocomplete="new-password">
+      </div>
+      <div class="auth-error" id="s-err"></div>
+      <button type="submit" class="auth-btn">🔐 Créer mon accès admin</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-screen" class="auth-screen" style="display:none">
+  <div class="auth-card">
+    <div class="auth-logo">GROUPE <span>HORIZON</span></div>
+    <div class="auth-badge">⚡ Super Admin</div>
+    <h2 class="auth-title">Connexion</h2>
+    <p class="auth-subtitle">Accès réservé à l'administrateur du site Groupe Horizon.</p>
+    <form class="auth-form" id="login-form">
+      <div class="auth-field">
+        <label>Mot de passe</label>
+        <input type="password" id="l-pwd" placeholder="Votre mot de passe admin" autocomplete="current-password">
+      </div>
+      <div class="auth-error" id="l-err"></div>
+      <button type="submit" class="auth-btn">🔓 Accéder au tableau de bord</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== ADMIN APP ===== -->
+<div id="admin-app">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">GROUPE <span>HORIZON</span></div>
+      <div class="sidebar-badge">⚡ Super Admin</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-group-title">Général</div>
+      <div class="nav-item active" data-panel="dashboard"><span class="nav-icon">🏠</span>Tableau de bord</div>
+      <div class="nav-item" data-panel="contact"><span class="nav-icon">📞</span>Contact &amp; coordonnées</div>
+      <div class="nav-item" data-panel="theme"><span class="nav-icon">🎨</span>Thème &amp; couleurs</div>
+
+      <div class="nav-group-title">Pages du site</div>
+      <div class="nav-item" data-panel="accueil"><span class="nav-icon">🌐</span>Accueil</div>
+      <div class="nav-item" data-panel="restauration"><span class="nav-icon">🍽️</span>Restauration</div>
+      <div class="nav-item" data-panel="imprimerie"><span class="nav-icon">🖨️</span>Imprimerie</div>
+      <div class="nav-item" data-panel="btp"><span class="nav-icon">🏗️</span>BTP &amp; Construction</div>
+      <div class="nav-item" data-panel="automobile"><span class="nav-icon">🚗</span>Automobile</div>
+      <div class="nav-item" data-panel="securite"><span class="nav-icon">📹</span>Sécurité</div>
+      <div class="nav-item" data-panel="elevage"><span class="nav-icon">🐄</span>Élevage</div>
+      <div class="nav-item" data-panel="immobilier"><span class="nav-icon">🏠</span>Immobilier</div>
+      <div class="nav-item" data-panel="foncier"><span class="nav-icon">📐</span>Foncier</div>
+
+      <div class="nav-group-title">Administration</div>
+      <div class="nav-item" data-panel="settings"><span class="nav-icon">⚙️</span>Paramètres</div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" id="logout-btn">🚪 Se déconnecter</button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Tableau de bord</div>
+        <div class="topbar-sub">Super Admin — Groupe Horizon</div>
+      </div>
+      <a href="index.html" target="_blank" class="visit-btn">↗ Voir le site</a>
+    </div>
+
+    <div class="content-area">
+
+      <!-- DASHBOARD -->
+      <div id="panel-dashboard" class="panel active">
+        <div class="dash-welcome">
+          <h2>Bienvenue, Administrateur 👋</h2>
+          <p>Modifiez textes, photos et contenu de chaque page directement depuis ce tableau de bord.</p>
+        </div>
+        <div class="dash-grid" id="dash-grid"></div>
+      </div>
+
+      <!-- CONTACT -->
+      <div id="panel-contact" class="panel">
+        <div class="form-section">
+          <div class="section-head"><span>📞</span><span class="section-head-title">Coordonnées &amp; contact</span></div>
+          <div class="section-body">
+            <div class="fg row2">
+              <div><label>Téléphone principal</label><input class="fi" id="c_phone" placeholder="+225 00 00 00 00 00"></div>
+              <div><label>WhatsApp</label><input class="fi" id="c_whatsapp" placeholder="+225 00 00 00 00 00"></div>
+            </div>
+            <div class="fg"><label>Adresse email</label><input type="email" class="fi" id="c_email" placeholder="contact@groupe-horizon.com"></div>
+            <div class="fg"><label>Adresse physique</label><textarea class="fi" id="c_address" placeholder="Abidjan, Côte d'Ivoire"></textarea></div>
+            <div class="fg"><label>Horaires d'ouverture</label><input class="fi" id="c_hours" placeholder="Lun - Sam : 08h - 18h"></div>
+          </div>
+        </div>
+        <div class="actions-bar">
+          <button class="btn-save" onclick="saveSection('contact')">💾 Sauvegarder</button>
+          <a href="index.html#contact" target="_blank" class="btn-link">↗ Voir la section contact</a>
+        </div>
+      </div>
+
+      <!-- THEME -->
+      <div id="panel-theme" class="panel">
+        <div class="form-section">
+          <div class="section-head"><span>🎨</span><span class="section-head-title">Couleurs du site</span></div>
+          <div class="section-body">
+            <div class="fg row2">
+              <div>
+                <label>Couleur principale (bleu navy)</label>
+                <input type="color" class="fi" id="t_bleu" value="#0f2a4a">
+                <span class="hint">Header, footer, textes principaux</span>
+              </div>
+              <div>
+                <label>Couleur accent (or)</label>
+                <input type="color" class="fi" id="t_or" value="#e8a813">
+                <span class="hint">Boutons, soulignements, tags</span>
+              </div>
+            </div>
+            <div class="theme-preview" id="theme-preview">Aperçu — Groupe Horizon</div>
+          </div>
+        </div>
+        <div class="actions-bar">
+          <button class="btn-save" onclick="saveTheme()">💾 Appliquer le thème</button>
+          <button class="btn-danger" onclick="resetTheme()">Réinitialiser</button>
+        </div>
+      </div>
+
+      <!-- ACCUEIL -->
+      <div id="panel-accueil" class="panel">
+        <div class="form-section">
+          <div class="section-head"><span>🌐</span><span class="section-head-title">Bannière principale (hero)</span></div>
+          <div class="section-body">
+            <div class="fg"><label>Titre principal</label><input class="fi" id="accueil_hero_title" placeholder="Le Groupe qui bâtit votre avenir"></div>
+            <div class="fg"><label>Sous-titre</label><textarea class="fi" id="accueil_hero_sub" placeholder="Immobilier, BTP, Restauration, Automobile..."></textarea></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="section-head"><span>📊</span><span class="section-head-title">Chiffres clés</span></div>
+          <div class="section-body">
+            <div class="fg row3">
+              <div><label>Chiffre 1</label><input class="fi" id="accueil_stat1_n" placeholder="8+">
+                   <label style="margin-top:.5rem">Libellé 1</label><input class="fi" id="accueil_stat1_l" placeholder="Secteurs d'activité"></div>
+              <div><label>Chiffre 2</label><input class="fi" id="accueil_stat2_n" placeholder="10+">
+                   <label style="margin-top:.5rem">Libellé 2</label><input class="fi" id="accueil_stat2_l" placeholder="Années d'expérience"></div>
+              <div><label>Chiffre 3</label><input class="fi" id="accueil_stat3_n" placeholder="500+">
+                   <label style="margin-top:.5rem">Libellé 3</label><input class="fi" id="accueil_stat3_l" placeholder="Clients satisfaits"></div>
+            </div>
+          </div>
+        </div>
+        <div class="actions-bar">
+          <button class="btn-save" onclick="saveSection('accueil')">💾 Sauvegarder</button>
+          <button class="btn-danger" onclick="resetSection('accueil')">Réinitialiser</button>
+          <a href="index.html" target="_blank" class="btn-link">↗ Voir la page</a>
+        </div>
+      </div>
+
+      <!-- SECTOR PANELS (generated by JS) -->
+      <div id="panel-restauration" class="panel"></div>
+      <div id="panel-imprimerie"   class="panel"></div>
+      <div id="panel-btp"          class="panel"></div>
+      <div id="panel-automobile"   class="panel"></div>
+      <div id="panel-securite"     class="panel"></div>
+      <div id="panel-elevage"      class="panel"></div>
+      <div id="panel-immobilier"   class="panel"></div>
+      <div id="panel-foncier"      class="panel"></div>
+
+      <!-- SETTINGS -->
+      <div id="panel-settings" class="panel">
+        <div class="form-section">
+          <div class="section-head"><span>🔑</span><span class="section-head-title">Changer le mot de passe</span></div>
+          <div class="section-body">
+            <div class="info-box">⚠️ Choisissez un mot de passe fort (8 caractères minimum). Il sera requis à chaque connexion.</div>
+            <div class="fg"><label>Mot de passe actuel</label><input type="password" class="fi" id="s_old"></div>
+            <div class="fg row2">
+              <div><label>Nouveau mot de passe</label><input type="password" class="fi" id="s_new"></div>
+              <div><label>Confirmer</label><input type="password" class="fi" id="s_new2"></div>
+            </div>
+            <div class="auth-error" id="s-pwd-err"></div>
+          </div>
+        </div>
+        <div class="actions-bar">
+          <button class="btn-save" onclick="changePassword()">🔐 Mettre à jour le mot de passe</button>
+        </div>
+        <div class="danger-zone" style="margin-top:1.5rem">
+          <h4>⚠️ Zone de danger</h4>
+          <p>Réinitialise tout le contenu personnalisé, toutes les photos et le thème. Cette action est irréversible.</p>
+          <button class="btn-danger" onclick="resetAll()">🗑️ Tout réinitialiser</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================
+   CONSTANTES
+===================================================== */
+const HASH_KEY    = 'gh_admin_hash';
+const SESSION_KEY = 'gh_admin_session';
+const DATA_KEY    = 'horizonContent';
+const THEME_KEY   = 'horizonTheme';
+const IMG_PFX     = 'horizonImg_';
+
+/* =====================================================
+   CONFIG PAGES
+===================================================== */
+const PAGE_META = [
+  {
+    id:'restauration', icon:'🍽️', label:'Restauration', href:'restauration.html',
+    galDef:['Plats ivoiriens','Cuisine africaine','Grillade & BBQ','Formules buffet','Traiteur mariage','Livraison express'],
+    newsDef:[
+      ['Juin 2026','Nouveau menu saison des pluies','Découvrez nos nouveaux plats chauds...'],
+      ['Mai 2026','3 mariages traiteur ce mois-ci','Notre équipe a assuré trois grands mariages...'],
+      ['Avril 2026','Extension livraison','Nous livrons désormais dans 5 communes d\'Abidjan...'],
+    ],
+    checks:['Restaurant : cuisine ivoirienne, africaine et internationale','Traiteur événementiel : mariages, séminaires, réceptions','Restauration collective pour entreprises et écoles','Livraison de repas et plats à emporter','Produits frais issus de notre propre élevage'],
+    cardDef:[
+      {icon:'🍱',name:'Menu du jour',desc:'Un plat chaud au choix + boisson.',price:'3 000 FCFA'},
+      {icon:'🥩',name:'Menu VIP',desc:'Entrée + plat + dessert + boisson.',price:'6 000 FCFA'},
+      {icon:'💍',name:'Traiteur mariage',desc:'Formule complète, cocktail, buffet.',price:'Sur devis'},
+      {icon:'🤝',name:'Traiteur séminaire',desc:'Pauses-café, buffet, cocktail.',price:'Sur devis'},
+      {icon:'🏫',name:'Restauration collective',desc:'Contrat mensuel entreprises.',price:'Sur devis'},
+      {icon:'🛵',name:'Livraison à domicile',desc:'Livraison rapide sur Abidjan.',price:'dès 5 000 FCFA'},
+    ],
+  },
+  {
+    id:'imprimerie', icon:'🖨️', label:'Imprimerie', href:'imprimerie.html',
+    galDef:['Cartes de visite','Flyers & prospectus','Bâches & kakémonos','Enseignes lumineuses','Grand format','Reliure & finitions'],
+    newsDef:[
+      ['Juin 2026','Nouveau traceur grand format','Nous investissons dans une nouvelle machine...'],
+      ['Mai 2026','Cartes de visite -20%','Promotion spéciale sur les séries de 1000 cartes...'],
+      ['Avril 2026','Délai express 24h disponible','Commandez avant 10h, récupérez le lendemain...'],
+    ],
+    checks:['Impression offset et numérique haute qualité','Cartes de visite, flyers, brochures, catalogues','Bâches, kakémonos, roll-up et affichage','Enseignes lumineuses et panneaux extérieurs','Reliure, pelliculage et finitions spéciales'],
+    cardDef:[
+      {icon:'🪪',name:'Cartes de visite',desc:'250 cartes, 2 faces couleur.',price:'8 000 FCFA'},
+      {icon:'📄',name:'Flyers A5',desc:'1000 exemplaires recto-verso couleur.',price:'15 000 FCFA'},
+      {icon:'📜',name:'Brochure A4',desc:'500 exemplaires 8 pages couleur.',price:'45 000 FCFA'},
+      {icon:'🚩',name:'Bâche publicitaire',desc:'Format 2×1 m, impression HD.',price:'25 000 FCFA'},
+      {icon:'🪟',name:'Kakémono / roll-up',desc:'85×200 cm avec pied aluminium.',price:'35 000 FCFA'},
+      {icon:'💡',name:'Enseigne lumineuse',desc:'Lettres découpées et backlit.',price:'Sur devis'},
+    ],
+  },
+  {
+    id:'btp', icon:'🏗️', label:'BTP & Construction', href:'btp.html',
+    galDef:['Construction villa','Rénovation intérieure','Électricité bâtiment','Plomberie & sanitaires','Peinture & finitions','Suivi de chantier'],
+    newsDef:[
+      ['Juin 2026','Livraison villa R+1 à Cocody','Remise des clés d\'une villa duplex de 280 m²...'],
+      ['Mai 2026','Nouveau chantier: immeuble R+4','Démarrage d\'un immeuble de 12 appartements...'],
+      ['Avril 2026','Partenariat matériaux','Accord avec un fournisseur local certifié...'],
+    ],
+    checks:['Construction de villas, immeubles et bâtiments industriels','Rénovation et réhabilitation de bâtiments anciens','Travaux publics : voirie, assainissement, terrassement','Plomberie, électricité, peinture, carrelage et menuiserie','Suivi de chantier et maîtrise d\'œuvre','Études techniques et plans d\'architecte'],
+    cardDef:[
+      {icon:'🏠',name:'Construction villa',desc:'Maison individuelle clé en main.',price:'Sur devis'},
+      {icon:'🔨',name:'Rénovation complète',desc:'Réhabilitation intérieure et extérieure.',price:'Sur devis'},
+      {icon:'⚡',name:'Électricité bâtiment',desc:'Installation complète, mise aux normes.',price:'Sur devis'},
+      {icon:'🚿',name:'Plomberie & sanitaires',desc:'Installation complète, tuyauterie.',price:'Sur devis'},
+      {icon:'🎨',name:'Peinture & finitions',desc:'Intérieure et extérieure, carrelage.',price:'Sur devis'},
+      {icon:'📋',name:'Suivi de chantier',desc:'Maîtrise d\'œuvre, rapports hebdo.',price:'Sur devis'},
+    ],
+  },
+  {
+    id:'automobile', icon:'🚗', label:'Automobile', href:'automobile.html',
+    galDef:['Citadines & berlines','SUV & 4x4','Minibus 9-15 places','Location avec chauffeur','Atelier & entretien','Véhicules d\'occasion'],
+    newsDef:[
+      ['Juin 2026','5 nouveaux SUV dans notre parc','Nous renforçons notre flotte avec 5 Toyota RAV4 2024...'],
+      ['Mai 2026','Offre longue durée entreprises','Forfait mensuel tout inclus à partir de 450 000 FCFA...'],
+      ['Avril 2026','Partenariat hôtels Abidjan','Accord signé avec 3 hôtels 4 étoiles...'],
+    ],
+    checks:['Location courte et longue durée','Location avec chauffeur pour déplacements professionnels','Vente de véhicules neufs et d\'occasion garantis','Reprise de votre ancien véhicule','Solutions de financement adaptées'],
+    cardDef:[
+      {icon:'🚗',name:'Citadine / Berline',desc:'Toyota Corolla ou similaire. Climatisée, assurée.',price:'25 000 FCFA/jour'},
+      {icon:'🚙',name:'SUV / 4x4',desc:'Toyota Prado ou similaire. GPS inclus.',price:'45 000 FCFA/jour'},
+      {icon:'🚐',name:'Minibus 9-15 places',desc:'Transport de groupe, climatisé.',price:'55 000 FCFA/jour'},
+      {icon:'👔',name:'Avec chauffeur',desc:'Chauffeur professionnel et discret.',price:'+15 000 FCFA/jour'},
+      {icon:'📅',name:'Location longue durée',desc:'Contrat mensuel avec entretien inclus.',price:'Sur devis'},
+      {icon:'🏷️',name:'Véhicule d\'occasion',desc:'Contrôlé et garanti 3 mois.',price:'Sur devis'},
+    ],
+  },
+  {
+    id:'securite', icon:'📹', label:'Sécurité', href:'securite.html',
+    galDef:['Caméras IP HD','Centrale d\'alarme','Contrôle d\'accès','Télésurveillance 24h','Agents de sécurité','Installation réseau'],
+    newsDef:[
+      ['Juin 2026','Caméras 4K disponibles','Nos nouvelles caméras haute définition 4K Ultra...'],
+      ['Mai 2026','Extension résidence Cocody','Installation de 32 caméras IP dans une résidence...'],
+      ['Avril 2026','Formation agents qualifiés','Session de formation pour 20 agents de sécurité...'],
+    ],
+    checks:['Vidéosurveillance IP et analogique HD','Systèmes d\'alarme intrusion et incendie','Contrôle d\'accès et badges magnétiques','Télésurveillance 24h/24 avec intervention rapide','Agents de sécurité qualifiés et certifiés','Installation et maintenance de réseaux'],
+    cardDef:[
+      {icon:'📷',name:'Pack surveillance 4 caméras',desc:'4 caméras HD + enregistreur DVR.',price:'250 000 FCFA'},
+      {icon:'🔔',name:'Alarme intrusion',desc:'Centrale + détecteurs + sirène.',price:'180 000 FCFA'},
+      {icon:'🚪',name:'Contrôle d\'accès',desc:'Badge, digicode, biométrique.',price:'Sur devis'},
+      {icon:'📡',name:'Télésurveillance',desc:'Surveillance 24h/24 avec intervention.',price:'15 000 FCFA/mois'},
+      {icon:'👮',name:'Agents de sécurité',desc:'Gardiens qualifiés, formés CNSP.',price:'Sur devis'},
+      {icon:'🔌',name:'Réseau informatique',desc:'Câblage, Wi-Fi, fibre optique.',price:'Sur devis'},
+    ],
+  },
+  {
+    id:'elevage', icon:'🐄', label:'Élevage', href:'elevage.html',
+    galDef:['Cheptel bovin','Élevage avicole','Porcin & ovin','Fourrage naturel','Soins vétérinaires','Livraison directe'],
+    newsDef:[
+      ['Juin 2026','Nouveau lot de 50 bovins','Notre cheptel s\'agrandit avec 50 nouveaux bovins...'],
+      ['Mai 2026','Partenariat restaurants','Fourniture directe avec 10 restaurants d\'Abidjan...'],
+      ['Avril 2026','Certification sanitaire renouvelée','Notre ferme a réussi le contrôle sanitaire annuel...'],
+    ],
+    checks:['Élevage bovin, ovin et caprin','Aviculture : volailles et œufs frais','Élevage porcin en filière contrôlée','Fourrage naturel cultivé sur site','Suivi vétérinaire régulier des animaux','Livraison directe aux professionnels'],
+    cardDef:[
+      {icon:'🐄',name:'Bovin (vache/taureau)',desc:'Races locales et croisées, bonne conformation.',price:'Sur devis'},
+      {icon:'🐔',name:'Volailles & poulets',desc:'Poulets de chair, poules pondeuses, pintades.',price:'Sur devis'},
+      {icon:'🐖',name:'Porcs & ovin',desc:'Porcs charcutiers et moutons.',price:'Sur devis'},
+      {icon:'🥚',name:'Œufs frais',desc:'Poules élevées en plein air.',price:'2 500 FCFA/plateau'},
+      {icon:'🌿',name:'Fourrage & aliments',desc:'Maïs, soja, foin pour éleveurs.',price:'Sur devis'},
+      {icon:'🚚',name:'Livraison pro',desc:'Directement restaurants et marchés.',price:'Sur devis'},
+    ],
+  },
+  {
+    id:'immobilier', icon:'🏠', label:'Immobilier', href:'immobilier.html',
+    galDef:['Villa à vendre','Appartements neufs','Terrain constructible','Bureau à louer','Résidence sécurisée','Gestion locative'],
+    newsDef:[
+      ['Juin 2026','Villa 4 chambres à Cocody','Nouvelle villa R+1 en vente à Cocody Ambassades...'],
+      ['Mai 2026','Immeuble 8 logements à Yopougon','Mise en vente d\'un immeuble R+2 de 8 appartements...'],
+      ['Avril 2026','Terrains à Bassam','Lots disponibles à Grand-Bassam à partir de 3 000 000 FCFA...'],
+    ],
+    checks:['Vente de terrains et de maisons','Location de villas, appartements et bureaux','Gestion locative clé en main','Syndic de copropriété','Conseil en investissement immobilier','Estimation et expertise de biens'],
+    cardDef:[
+      {icon:'🏡',name:'Villa à vendre',desc:'Villas 3 à 6 chambres sur plan ou prêtes.',price:'Sur devis'},
+      {icon:'🏢',name:'Appartement neuf',desc:'T2 à T4 dans résidences sécurisées.',price:'Sur devis'},
+      {icon:'📐',name:'Terrain constructible',desc:'Lots viabilisés avec titre foncier.',price:'Sur devis'},
+      {icon:'🏬',name:'Bureau / commercial',desc:'Plateaux de bureaux et locaux commerciaux.',price:'Sur devis'},
+      {icon:'🔑',name:'Gestion locative',desc:'Encaissement, entretien, suivi.',price:'10% des loyers'},
+      {icon:'📊',name:'Conseil immobilier',desc:'Estimation, expertise et conseil achat.',price:'Sur devis'},
+    ],
+  },
+  {
+    id:'foncier', icon:'📐', label:'Aménagement foncier', href:'foncier.html',
+    galDef:['Bornage de terrain','Levé topographique','Lotissement parcelles','Titre foncier','Route d\'accès','Clôture & viabilisation'],
+    newsDef:[
+      ['Juin 2026','Nouveau lotissement à Songon','25 parcelles disponibles dans la zone de Songon...'],
+      ['Mai 2026','Régularisation foncière','Accompagnement pour régulariser votre titre...'],
+      ['Avril 2026','Bornage express 7 jours','Délai réduit sur les bornages de parcelles urbaines...'],
+    ],
+    checks:['Bornage et délimitation de parcelles','Levés topographiques et géomètre-expert','Lotissement et division de terrain','Acquisition et sécurisation de titre foncier','Viabilisation : eau, électricité, route d\'accès','Clôture et murs de délimitation'],
+    cardDef:[
+      {icon:'📍',name:'Bornage de terrain',desc:'Délimitation précise avec bornes officielles.',price:'Sur devis'},
+      {icon:'📊',name:'Levé topographique',desc:'Cartographie et plan de masse certifiés.',price:'Sur devis'},
+      {icon:'📋',name:'Obtention titre foncier',desc:'Accompagnement complet dossier TF.',price:'Sur devis'},
+      {icon:'🏘️',name:'Lotissement',desc:'Division en lots + plan d\'urbanisme.',price:'Sur devis'},
+      {icon:'🛣️',name:'Voirie & accès',desc:'Ouverture de pistes et routes d\'accès.',price:'Sur devis'},
+      {icon:'🧱',name:'Clôture & viabilisation',desc:'Mur de clôture et raccordements réseaux.',price:'Sur devis'},
+    ],
+  },
+];
+
+const PANEL_TITLES = {
+  dashboard:'Tableau de bord', contact:'Contact & coordonnées', theme:'Thème & couleurs',
+  accueil:'Page Accueil', settings:'Paramètres',
+  restauration:'Page Restauration', imprimerie:'Page Imprimerie',
+  btp:'Page BTP & Construction', automobile:'Page Automobile', securite:'Page Sécurité',
+  elevage:'Page Élevage', immobilier:'Page Immobilier', foncier:'Page Foncier',
+};
+
+/* =====================================================
+   SHA-256
+===================================================== */
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* =====================================================
+   AUTH
+===================================================== */
+function isFirstRun() { return !localStorage.getItem(HASH_KEY); }
+function isLoggedIn()  { return sessionStorage.getItem(SESSION_KEY) === '1'; }
+
+function showAuth() {
+  if (isFirstRun()) {
+    document.getElementById('setup-screen').style.display = 'flex';
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+}
+
+function showAdmin() {
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-app').classList.add('active');
+  buildDashboard();
+  buildAllPagePanels();
+  loadAllFields();
+  initAllPhotoUploads();
+  updateThemePreview();
+}
+
+document.getElementById('setup-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const pwd  = document.getElementById('s-pwd').value;
+  const pwd2 = document.getElementById('s-pwd2').value;
+  const err  = document.getElementById('s-err');
+  if (pwd.length < 8) { showErr(err,'Le mot de passe doit contenir au moins 8 caractères.'); return; }
+  if (pwd !== pwd2)    { showErr(err,'Les deux mots de passe ne correspondent pas.'); return; }
+  err.classList.remove('show');
+  localStorage.setItem(HASH_KEY, await sha256(pwd));
+  sessionStorage.setItem(SESSION_KEY, '1');
+  showAdmin();
+  toast('✅ Accès administrateur créé avec succès !', 'success');
+});
+
+document.getElementById('login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const pwd = document.getElementById('l-pwd').value;
+  const err = document.getElementById('l-err');
+  if (await sha256(pwd) === localStorage.getItem(HASH_KEY)) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    err.classList.remove('show');
+    showAdmin();
+    toast('✅ Connexion réussie !', 'success');
+  } else {
+    showErr(err, 'Mot de passe incorrect. Réessayez.');
+  }
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  sessionStorage.removeItem(SESSION_KEY);
+  location.reload();
+});
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id)?.classList.add('active');
+  document.querySelector(`.nav-item[data-panel="${id}"]`)?.classList.add('active');
+  document.getElementById('topbar-title').textContent = PANEL_TITLES[id] || id;
+  window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('.nav-item[data-panel]').forEach(el => {
+  el.addEventListener('click', () => showPanel(el.dataset.panel));
+});
+
+/* =====================================================
+   STORAGE
+===================================================== */
+function getData()       { try { return JSON.parse(localStorage.getItem(DATA_KEY) || '{}'); } catch { return {}; } }
+function mergeData(obj)  { const d = getData(); Object.assign(d, obj); localStorage.setItem(DATA_KEY, JSON.stringify(d)); }
+function clearPrefix(pfx){ const d = getData(); Object.keys(d).filter(k=>k.startsWith(pfx+'_')).forEach(k=>delete d[k]); localStorage.setItem(DATA_KEY, JSON.stringify(d)); }
+
+/* =====================================================
+   BUILD DASHBOARD
+===================================================== */
+function buildDashboard() {
+  const items = [
+    {id:'contact', icon:'📞', label:'Contact'},
+    {id:'theme',   icon:'🎨', label:'Thème'},
+    {id:'accueil', icon:'🌐', label:'Accueil'},
+    ...PAGE_META,
+    {id:'settings',icon:'⚙️', label:'Paramètres'},
+  ];
+  document.getElementById('dash-grid').innerHTML = items.map(p => `
+    <div class="dash-card" onclick="showPanel('${p.id}')">
+      <div class="dash-icon">${p.icon}</div>
+      <div class="dash-name">${p.label}</div>
+      <div class="dash-status"><span class="dot"></span>En ligne</div>
+    </div>`).join('');
+}
+
+/* =====================================================
+   BUILD ALL PAGE PANELS
+===================================================== */
+function buildAllPagePanels() {
+  PAGE_META.forEach(meta => {
+    const panel = document.getElementById('panel-' + meta.id);
+    if (!panel) return;
+    panel.innerHTML = buildPagePanel(meta);
+    // Wire tab buttons
+    panel.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.dataset.tab;
+        panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        panel.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        panel.querySelector('#' + tabId)?.classList.add('active');
+      });
+    });
+  });
+}
+
+function buildPagePanel(m) {
+  const p = m.id;
+  const tabs = [
+    { key:'entete',    label:'En-tête' },
+    { key:'boutique',  label:'Boutique' },
+    { key:'pres',      label:'Présentation' },
+    { key:'galerie',   label:'📸 Galerie' },
+    { key:'actu',      label:'Actualités' },
+    { key:'cta',       label:'CTA' },
+  ];
+  return `
+    <div class="tabs-nav">
+      ${tabs.map((t,i) => `<button class="tab-btn${i===0?' active':''}" data-tab="${p}-${t.key}">${t.label}</button>`).join('')}
+    </div>
+
+    <!-- EN-TETE -->
+    <div id="${p}-entete" class="tab-pane active">
+      <div class="form-section">
+        <div class="section-head"><span>${m.icon}</span><span class="section-head-title">En-tête de page</span></div>
+        <div class="section-body">
+          <div class="fg"><label>Tag / étiquette hero</label><input class="fi" id="${p}_hero_tag" placeholder="ex: 🍽️ SECTEUR 06"></div>
+          <div class="fg"><label>Titre de la page (h1)</label><input class="fi" id="${p}_hero_title" placeholder="${m.label}"></div>
+          <div class="fg"><label>Description sous le titre</label><textarea class="fi" id="${p}_hero_desc"></textarea></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="section-head"><span>📝</span><span class="section-head-title">Section présentation</span></div>
+        <div class="section-body">
+          <div class="fg"><label>Tag de section</label><input class="fi" id="${p}_intro_tag" placeholder="Nos prestations"></div>
+          <div class="fg"><label>Titre (h2)</label><input class="fi" id="${p}_intro_h2"></div>
+          <div class="fg"><label>Paragraphe</label><textarea class="fi" style="min-height:90px" id="${p}_intro_p"></textarea></div>
+          <div class="fg"><label>Texte du bouton CTA</label><input class="fi" id="${p}_intro_cta" placeholder="Demander un devis"></div>
+          ${m.checks.map((ch,i) => `<div class="fg"><label>✔ Point ${i+1}</label><input class="fi" id="${p}_check${i+1}" placeholder="${ch}"></div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- BOUTIQUE -->
+    <div id="${p}-boutique" class="tab-pane">
+      <div class="form-section">
+        <div class="section-head"><span>🛒</span><span class="section-head-title">Section boutique</span><span class="badge-pill">6 cartes</span></div>
+        <div class="section-body">
+          <div class="fg row2">
+            <div><label>Tag de section</label><input class="fi" id="${p}_shop_tag" placeholder="Boutique ${m.label}"></div>
+            <div><label>Titre (h2)</label><input class="fi" id="${p}_shop_h2" placeholder="Nos offres &amp; tarifs"></div>
+          </div>
+          <div class="cards-editor">
+            ${m.cardDef.map((c,i) => {
+              const n = i+1;
+              return `<div class="card-ed">
+                <div class="card-ed-num">Carte ${n}</div>
+                <div class="fg"><label>Icône (emoji)</label><input class="fi" id="${p}_c${n}_icon" placeholder="${c.icon}"></div>
+                <div class="fg"><label>Nom</label><input class="fi" id="${p}_c${n}_name" placeholder="${c.name}"></div>
+                <div class="fg"><label>Description</label><textarea class="fi" id="${p}_c${n}_desc" placeholder="${c.desc}"></textarea></div>
+                <div class="fg"><label>Prix / tarif</label><input class="fi" id="${p}_c${n}_price" placeholder="${c.price}"></div>
+                <div class="fg"><label>Texte bouton</label><input class="fi" id="${p}_c${n}_btn" placeholder="Commander"></div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRESENTATION -->
+    <div id="${p}-pres" class="tab-pane">
+      <div class="form-section">
+        <div class="section-head"><span>🏢</span><span class="section-head-title">Textes de présentation</span></div>
+        <div class="section-body">
+          <div class="fg row2">
+            <div><label>Tag de section</label><input class="fi" id="${p}_pres_tag" placeholder="Notre activité"></div>
+            <div><label>Titre (h2)</label><input class="fi" id="${p}_pres_h2" placeholder="À propos de notre pôle ${m.label}"></div>
+          </div>
+          <div class="fg"><label>Paragraphe 1</label><textarea class="fi" style="min-height:90px" id="${p}_pres_p1"></textarea></div>
+          <div class="fg"><label>Paragraphe 2</label><textarea class="fi" style="min-height:90px" id="${p}_pres_p2"></textarea></div>
+          <div class="highlights-editor">
+            ${[1,2,3].map(n => `<div class="highlight-ed">
+              <div class="card-ed-num">Point fort ${n}</div>
+              <div class="fg"><label>Icône (emoji)</label><input class="fi" id="${p}_ph${n}_icon" placeholder="🎯"></div>
+              <div class="fg"><label>Titre</label><input class="fi" id="${p}_ph${n}_title" placeholder="Titre du point"></div>
+              <div class="fg"><label>Description</label><textarea class="fi" id="${p}_ph${n}_text" placeholder="Description..."></textarea></div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="section-head"><span>👥</span><span class="section-head-title">Photos de l'équipe</span><span class="badge-pill">3 portraits</span></div>
+        <div class="section-body">
+          <div class="info-box">📤 Photos portrait (format vertical recommandé). Cliquez ou glissez une photo. Taille max : 3 Mo.</div>
+          <div class="gallery-upload-grid">
+            ${[1,2,3].map(n => `<div class="upload-slot" data-img-key="${p}_team_${n}">
+              <div class="upload-zone" id="uz-${p}-team-${n}" style="aspect-ratio:3/4">
+                <img class="uz-preview" alt="">
+                <div class="uz-empty"><div class="uz-icon">👤</div><p>Photo équipe ${n}<br>ou <strong>cliquer</strong></p></div>
+                <input type="file" class="uz-input" accept="image/*">
+                <button class="uz-delete">🗑️ Suppr.</button>
+              </div>
+              <div class="fg"><label>Nom / poste</label><input class="fi" id="${p}_team${n}_caption" placeholder="Prénom Nom — Directeur"></div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="section-head"><span>🏢</span><span class="section-head-title">Photos de l'établissement</span><span class="badge-pill">3 photos</span></div>
+        <div class="section-body">
+          <div class="info-box">📤 Photos de vos locaux, ateliers ou espaces. Format paysage recommandé. Taille max : 3 Mo.</div>
+          <div class="gallery-upload-grid">
+            ${[1,2,3].map(n => `<div class="upload-slot" data-img-key="${p}_estab_${n}">
+              <div class="upload-zone" id="uz-${p}-estab-${n}">
+                <img class="uz-preview" alt="">
+                <div class="uz-empty"><div class="uz-icon">🏢</div><p>Établissement ${n}<br>ou <strong>cliquer</strong></p></div>
+                <input type="file" class="uz-input" accept="image/*">
+                <button class="uz-delete">🗑️ Suppr.</button>
+              </div>
+              <div class="fg"><label>Légende</label><input class="fi" id="${p}_estab${n}_caption" placeholder="Vue de nos locaux"></div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALERIE -->
+    <div id="${p}-galerie" class="tab-pane">
+      <div class="form-section">
+        <div class="section-head"><span>📸</span><span class="section-head-title">Galerie photos</span><span class="badge-pill">6 photos</span></div>
+        <div class="section-body">
+          <div class="fg row2">
+            <div><label>Tag de section</label><input class="fi" id="${p}_gal_tag" placeholder="Galerie"></div>
+            <div><label>Titre (h2)</label><input class="fi" id="${p}_gal_h2" placeholder="Nos réalisations en images"></div>
+          </div>
+          <div class="info-box">📤 Cliquez ou glissez une photo sur chaque emplacement. Les photos sont sauvegardées automatiquement. Taille max : 2 Mo par photo.</div>
+          <div class="gallery-upload-grid">
+            ${m.galDef.map((cap,i) => {
+              const n = i+1;
+              const key = p + '_' + n;
+              return `<div class="upload-slot" data-img-key="${key}">
+                <div class="upload-zone" id="uz-${p}-${n}">
+                  <img class="uz-preview" alt="">
+                  <div class="uz-empty">
+                    <div class="uz-icon">📷</div>
+                    <p>Glisser une photo<br>ou <strong>cliquer</strong></p>
+                  </div>
+                  <input type="file" class="uz-input" accept="image/*">
+                  <button class="uz-delete">🗑️ Suppr.</button>
+                </div>
+                <div class="fg">
+                  <label>Légende photo ${n}</label>
+                  <input class="fi" id="${p}_gal${n}_caption" placeholder="${cap}">
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTUALITES -->
+    <div id="${p}-actu" class="tab-pane">
+      <div class="form-section">
+        <div class="section-head"><span>📰</span><span class="section-head-title">Actualités</span><span class="badge-pill">3 articles</span></div>
+        <div class="section-body">
+          <div class="fg row2">
+            <div><label>Tag de section</label><input class="fi" id="${p}_news_tag" placeholder="Actualités"></div>
+            <div><label>Titre (h2)</label><input class="fi" id="${p}_news_h2" placeholder="Nos dernières nouvelles"></div>
+          </div>
+          <div class="news-editor">
+            ${m.newsDef.map((a,i) => {
+              const n = i+1;
+              return `<div class="news-card-ed">
+                <div class="news-card-num">Article ${n}</div>
+                <div class="fg row3">
+                  <div><label>Date</label><input class="fi" id="${p}_a${n}_date" placeholder="${a[0]}"></div>
+                  <div style="grid-column:span 2"><label>Titre de l'article</label><input class="fi" id="${p}_a${n}_title" placeholder="${a[1]}"></div>
+                </div>
+                <div class="fg"><label>Description / résumé</label><textarea class="fi" id="${p}_a${n}_desc" placeholder="${a[2]}"></textarea></div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div id="${p}-cta" class="tab-pane">
+      <div class="form-section">
+        <div class="section-head"><span>📣</span><span class="section-head-title">Section appel à l'action (CTA)</span></div>
+        <div class="section-body">
+          <div class="fg"><label>Titre (h2)</label><input class="fi" id="${p}_cta_h2" placeholder="Contactez-nous dès aujourd'hui"></div>
+          <div class="fg"><label>Paragraphe</label><textarea class="fi" id="${p}_cta_p" placeholder="Obtenez votre devis gratuit sous 24 heures."></textarea></div>
+          <div class="fg"><label>Texte du bouton</label><input class="fi" id="${p}_cta_btn" placeholder="Nous contacter"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIONS BAR -->
+    <div class="actions-bar">
+      <button class="btn-save" onclick="savePageSection('${p}')">💾 Sauvegarder toute la page</button>
+      <button class="btn-danger" onclick="resetPageSection('${p}')">Réinitialiser</button>
+      <a href="${m.href}" target="_blank" class="btn-link">↗ Voir la page</a>
+    </div>`;
+}
+
+/* =====================================================
+   PHOTO UPLOAD
+===================================================== */
+function initAllPhotoUploads() {
+  document.querySelectorAll('.upload-slot').forEach(slot => {
+    const imgKey = slot.dataset.imgKey;
+    const zone   = slot.querySelector('.upload-zone');
+    const input  = slot.querySelector('.uz-input');
+    const del    = slot.querySelector('.uz-delete');
+    if (!zone || !imgKey) return;
+
+    // Load existing image
+    const stored = localStorage.getItem(IMG_PFX + imgKey);
+    if (stored) uzShow(zone, stored);
+
+    // Click on zone → open file picker
+    zone.addEventListener('click', e => {
+      if (del.contains(e.target)) return;
+      input.click();
+    });
+
+    // File selected via picker
+    input.addEventListener('change', () => {
+      if (input.files[0]) processPhoto(input.files[0], imgKey, zone);
+    });
+
+    // Drag events
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const f = e.dataTransfer.files[0];
+      if (f && f.type.startsWith('image/')) processPhoto(f, imgKey, zone);
+    });
+
+    // Delete
+    del.addEventListener('click', e => {
+      e.stopPropagation();
+      localStorage.removeItem(IMG_PFX + imgKey);
+      input.value = '';
+      uzHide(zone);
+      toast('🗑️ Photo supprimée.', 'success');
+    });
+  });
+}
+
+function processPhoto(file, imgKey, zone) {
+  if (file.size > 3 * 1024 * 1024) {
+    toast('⚠️ Image trop lourde (max 3 Mo). Compressez-la avant de l\'importer.', 'error');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      localStorage.setItem(IMG_PFX + imgKey, e.target.result);
+      uzShow(zone, e.target.result);
+      toast('✅ Photo enregistrée !', 'success');
+    } catch {
+      toast('⚠️ Stockage plein. Supprimez des photos ou compressez davantage.', 'error');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function uzShow(zone, src) {
+  zone.querySelector('.uz-preview').src = src;
+  zone.querySelector('.uz-preview').style.display = 'block';
+  zone.querySelector('.uz-empty').style.display = 'none';
+  zone.querySelector('.uz-delete').style.display = 'flex';
+  zone.classList.add('has-img');
+}
+
+function uzHide(zone) {
+  zone.querySelector('.uz-preview').src = '';
+  zone.querySelector('.uz-preview').style.display = 'none';
+  zone.querySelector('.uz-empty').style.display = 'flex';
+  zone.querySelector('.uz-delete').style.display = 'none';
+  zone.classList.remove('has-img');
+}
+
+/* =====================================================
+   LOAD / SAVE
+===================================================== */
+function loadAllFields() {
+  const d = getData();
+  document.querySelectorAll('input.fi, textarea.fi').forEach(el => {
+    if (el.id && d[el.id] !== undefined) el.value = d[el.id];
+  });
+  // Theme
+  const t = JSON.parse(localStorage.getItem(THEME_KEY) || '{}');
+  if (t.bleu) document.getElementById('t_bleu').value = t.bleu;
+  if (t.or)   document.getElementById('t_or').value   = t.or;
+}
+
+function savePageSection(page) {
+  const updates = {};
+  document.querySelectorAll(`input.fi[id^="${page}_"], textarea.fi[id^="${page}_"]`).forEach(el => {
+    if (el.value.trim()) updates[el.id] = el.value.trim();
+  });
+  mergeData(updates);
+  toast(`✅ Page "${PANEL_TITLES['page_' + page] || page}" sauvegardée !`, 'success');
+}
+
+function saveSection(prefix) {
+  const updates = {};
+  if (prefix === 'contact') {
+    document.querySelectorAll('input[id^="c_"], textarea[id^="c_"]').forEach(el => {
+      const key = el.id.replace('c_', 'global_');
+      if (el.value.trim()) updates[key] = el.value.trim();
+    });
+  } else {
+    document.querySelectorAll(`input.fi[id^="${prefix}_"], textarea.fi[id^="${prefix}_"]`).forEach(el => {
+      if (el.value.trim()) updates[el.id] = el.value.trim();
+    });
+  }
+  mergeData(updates);
+  toast(`✅ "${PANEL_TITLES[prefix] || prefix}" sauvegardé !`, 'success');
+}
+
+function resetPageSection(prefix) {
+  if (!confirm(`Réinitialiser toute la page "${prefix}" ?\n\nTextes ET photos seront effacés. Action irréversible.`)) return;
+  clearPrefix(prefix);
+  for (let i = 1; i <= 6; i++) localStorage.removeItem(IMG_PFX + prefix + '_' + i);
+  for (let i = 1; i <= 3; i++) {
+    localStorage.removeItem(IMG_PFX + prefix + '_team_' + i);
+    localStorage.removeItem(IMG_PFX + prefix + '_estab_' + i);
+  }
+  document.querySelectorAll(`.upload-slot[data-img-key^="${prefix}_"]`).forEach(slot => {
+    uzHide(slot.querySelector('.upload-zone'));
+    slot.querySelector('.uz-input').value = '';
+  });
+  loadAllFields();
+  toast(`🔄 Page "${prefix}" réinitialisée.`, 'success');
+}
+
+function resetSection(prefix) {
+  if (!confirm(`Réinitialiser le contenu de "${prefix}" ? Action irréversible.`)) return;
+  clearPrefix(prefix);
+  loadAllFields();
+  toast(`🔄 "${prefix}" réinitialisé.`, 'success');
+}
+
+/* =====================================================
+   THEME
+===================================================== */
+function saveTheme() {
+  const bleu = document.getElementById('t_bleu').value;
+  const or   = document.getElementById('t_or').value;
+  localStorage.setItem(THEME_KEY, JSON.stringify({ bleu, or }));
+  toast('✅ Thème appliqué ! Rechargez les pages pour voir les changements.', 'success');
+}
+
+function resetTheme() {
+  if (!confirm('Réinitialiser le thème aux couleurs d\'origine ?')) return;
+  localStorage.removeItem(THEME_KEY);
+  document.getElementById('t_bleu').value = '#0f2a4a';
+  document.getElementById('t_or').value   = '#e8a813';
+  updateThemePreview();
+  toast('🔄 Thème réinitialisé.', 'success');
+}
+
+function updateThemePreview() {
+  const bleu = document.getElementById('t_bleu')?.value || '#0f2a4a';
+  const or   = document.getElementById('t_or')?.value   || '#e8a813';
+  const p    = document.getElementById('theme-preview');
+  if (p) { p.style.background = bleu; p.style.color = or; }
+}
+
+document.getElementById('t_bleu')?.addEventListener('input', updateThemePreview);
+document.getElementById('t_or')?.addEventListener('input', updateThemePreview);
+
+/* =====================================================
+   PASSWORD CHANGE
+===================================================== */
+async function changePassword() {
+  const old = document.getElementById('s_old').value;
+  const nw  = document.getElementById('s_new').value;
+  const nw2 = document.getElementById('s_new2').value;
+  const err = document.getElementById('s-pwd-err');
+  if (await sha256(old) !== localStorage.getItem(HASH_KEY)) { showErr(err,'Mot de passe actuel incorrect.'); return; }
+  if (nw.length < 8)  { showErr(err,'Le nouveau mot de passe doit contenir au moins 8 caractères.'); return; }
+  if (nw !== nw2)     { showErr(err,'Les deux nouveaux mots de passe ne correspondent pas.'); return; }
+  err.classList.remove('show');
+  localStorage.setItem(HASH_KEY, await sha256(nw));
+  ['s_old','s_new','s_new2'].forEach(id => document.getElementById(id).value = '');
+  toast('✅ Mot de passe mis à jour avec succès !', 'success');
+}
+
+/* =====================================================
+   RESET ALL
+===================================================== */
+function resetAll() {
+  if (!confirm('⚠️ Supprimer TOUT le contenu personnalisé, TOUTES les photos et le thème ?\nAction irréversible.')) return;
+  localStorage.removeItem(DATA_KEY);
+  localStorage.removeItem(THEME_KEY);
+  // Remove all photos
+  Object.keys(localStorage).filter(k => k.startsWith(IMG_PFX)).forEach(k => localStorage.removeItem(k));
+  document.querySelectorAll('.upload-zone').forEach(z => uzHide(z));
+  document.querySelectorAll('.uz-input').forEach(i => i.value = '');
+  loadAllFields();
+  document.getElementById('t_bleu').value = '#0f2a4a';
+  document.getElementById('t_or').value   = '#e8a813';
+  updateThemePreview();
+  toast('🔄 Tout le contenu a été réinitialisé.', 'success');
+}
+
+/* =====================================================
+   TOAST / HELPERS
+===================================================== */
+let _tt = null;
+function toast(msg, type='success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  clearTimeout(_tt);
+  _tt = setTimeout(() => el.classList.remove('show'), 4500);
+}
+
+function showErr(el, msg) { el.textContent = msg; el.classList.add('show'); }
+
+/* =====================================================
+   INIT
+===================================================== */
+if (isLoggedIn()) showAdmin(); else showAuth();
+</script>
+</body>
+</html>
