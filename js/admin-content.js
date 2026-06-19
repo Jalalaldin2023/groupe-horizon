@@ -16,7 +16,7 @@
   const page = (location.pathname.split('/').pop() || 'index').replace('.html','') || 'index';
 
   const DEFAULT_WA = '2250709596520';
-  const waNum = (d.global_whatsapp || DEFAULT_WA).replace(/\D/g, '');
+  const waNum = (d[page + '_whatsapp'] || d.global_whatsapp || DEFAULT_WA).replace(/\D/g, '');
   const waBase = 'https://wa.me/' + waNum;
 
   document.addEventListener('DOMContentLoaded', () =>{
