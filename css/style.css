@@ -354,6 +354,9 @@ img { max-width: 100%; }
 }
 .shop-card:hover { transform: translateY(-5px); box-shadow: var(--ombre); border-color: var(--or); }
 .shop-card-icon { font-size: 2.2rem; }
+.shop-card-img { margin: -1.8rem -1.5rem 1.2rem; aspect-ratio: 4/3; overflow: hidden; }
+.shop-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+.shop-card:hover .shop-card-img img { transform: scale(1.04); }
 .shop-card-name { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; color: var(--bleu-fonce); }
 .shop-card-desc { font-size: .88rem; color: var(--gris); flex: 1; }
 .shop-card-price {

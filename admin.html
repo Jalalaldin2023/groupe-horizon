@@ -1223,11 +1223,21 @@ function initShopEditor(page, meta) {
 }
 
 function makeCardEdHTML(page, n, d, def) {
-  const v = k =>(d && d[`${page}_c${n}_${k}`]) || '';
-  const ph = k =>(def && def[k]) || '';
+  const v = k => (d && d[`${page}_c${n}_${k}`]) || '';
+  const ph = k => (def && def[k]) || '';
+  const stored = localStorage.getItem(IMG_PFX + `${page}_shop_${n}`);
+  const pvStyle = stored ? 'display:block' : 'display:none';
+  const emStyle = stored ? 'display:none'  : 'display:flex';
   return `<div class="card-ed" id="card-ed-${page}-${n}">
     <div class="card-ed-num">Carte ${n}<button type="button" class="btn-del-card" onclick="removeShopCard('${page}',${n})">Suppr.</button></div>
-    <div class="fg"><label>Icone (emoji)</label><input class="fi" id="${page}_c${n}_icon" value="${v('icon')}" placeholder="${ph('icon')}"></div>
+    <div class="upload-slot" data-img-key="${page}_shop_${n}" style="margin-bottom:.6rem">
+      <div class="upload-zone" id="uz-${page}-shop-${n}" style="aspect-ratio:4/3">
+        <img class="uz-preview" alt="" style="${pvStyle}" ${stored ? `src="${stored}"` : ''}>
+        <div class="uz-empty" style="${emStyle}"><div class="uz-icon" style="font-size:1.4rem">&#128247;</div><p>Photo carte<br>ou <strong>cliquer</strong></p></div>
+        <input type="file" class="uz-input" accept="image/*">
+        <button class="uz-delete" style="${stored ? 'display:flex' : 'display:none'}">Suppr.</button>
+      </div>
+    </div>
     <div class="fg"><label>Nom</label><input class="fi" id="${page}_c${n}_name" value="${v('name')}" placeholder="${ph('name')}"></div>
     <div class="fg"><label>Description</label><textarea class="fi" id="${page}_c${n}_desc" placeholder="${ph('desc')}">${v('desc')}</textarea></div>
     <div class="fg"><label>Prix / tarif</label><input class="fi" id="${page}_c${n}_price" value="${v('price')}" placeholder="${ph('price')}"></div>
@@ -1248,6 +1258,8 @@ function addShopCard(page) {
   if (!container) return;
   const n = container.querySelectorAll('.card-ed').length + 1;
   container.insertAdjacentHTML('beforeend', makeCardEdHTML(page, n, {}, null));
+  const slot = container.lastElementChild.querySelector('.upload-slot');
+  if (slot) initOneUploadSlot(slot);
   updateCardsBadge(page);
   container.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -1259,31 +1271,35 @@ function removeShopCard(page, n) {
     toast('Il faut garder au moins une carte.', 'error'); return;
   }
 
-  // Collect all current values before renumbering
-  const allCards = Array.from(container.querySelectorAll('.card-ed')).map((el, idx) =>{
+  // Collect all current values + photos before renumbering
+  const allCards = Array.from(container.querySelectorAll('.card-ed')).map((el, idx) => {
     const i = idx + 1;
-    const get = k =>document.getElementById(`${page}_c${i}_${k}`)?.value || '';
-    return { icon: get('icon'), name: get('name'), desc: get('desc'), price: get('price'), btn: get('btn') };
+    const get = k => document.getElementById(`${page}_c${i}_${k}`)?.value || '';
+    return { name: get('name'), desc: get('desc'), price: get('price'), btn: get('btn'),
+             img: localStorage.getItem(IMG_PFX + `${page}_shop_${i}`) };
   });
-  allCards.splice(n - 1, 1); // remove the nth card (1-based)
+  allCards.splice(n - 1, 1);
 
-  // Persist: clear old keys then write renumbered data
+  // Clear old text keys and photos, then write renumbered data
   const d = getData();
-  Object.keys(d).filter(k =>k.startsWith(`${page}_c`) && /^[a-z]+_c\d+_/.test(k)).forEach(k =>delete d[k]);
+  const oldCount = allCards.length + 1;
+  Object.keys(d).filter(k => k.startsWith(`${page}_c`) && /^[a-z]+_c\d+_/.test(k)).forEach(k => delete d[k]);
+  for (let i = 1; i <= oldCount; i++) localStorage.removeItem(IMG_PFX + `${page}_shop_${i}`);
   d[page + '_shop_count'] = String(allCards.length);
-  allCards.forEach((c, idx) =>{
+  allCards.forEach((c, idx) => {
     const i = idx + 1;
-    if (c.icon) d[`${page}_c${i}_icon`] = c.icon;
-    if (c.name) d[`${page}_c${i}_name`] = c.name;
-    if (c.desc) d[`${page}_c${i}_desc`] = c.desc;
+    if (c.name)  d[`${page}_c${i}_name`]  = c.name;
+    if (c.desc)  d[`${page}_c${i}_desc`]  = c.desc;
     if (c.price) d[`${page}_c${i}_price`] = c.price;
-    if (c.btn) d[`${page}_c${i}_btn`] = c.btn;
+    if (c.btn)   d[`${page}_c${i}_btn`]   = c.btn;
+    if (c.img)   localStorage.setItem(IMG_PFX + `${page}_shop_${i}`, c.img);
   });
   localStorage.setItem(DATA_KEY, JSON.stringify(d));
 
-  // Rebuild editor
-  const meta = PAGE_META.find(m =>m.id === page);
+  // Rebuild editor and re-wire upload slots
+  const meta = PAGE_META.find(m => m.id === page);
   initShopEditor(page, meta);
+  container.querySelectorAll('.upload-slot').forEach(slot => initOneUploadSlot(slot));
   toast('Carte supprimée.', 'success');
 }
 
@@ -1406,10 +1422,11 @@ function saveSection(prefix) {
 function resetPageSection(prefix) {
   if (!confirm(`Réinitialiser toute la page "${prefix}" ?\n\nTextes ET photos seront effacés. Action irréversible.`)) return;
   clearPrefix(prefix);
-  // Clear page logo, gallery, team, estab, catalogue photos
+  // Clear page logo, shop, gallery, team, estab, catalogue photos
   localStorage.removeItem(IMG_PFX + prefix + '_logo');
   for (let i = 1; i <= 20; i++) {
     localStorage.removeItem(IMG_PFX + prefix + '_' + i);
+    localStorage.removeItem(IMG_PFX + prefix + '_shop_' + i);
     localStorage.removeItem(IMG_PFX + prefix + '_cat_' + i);
   }
   for (let i = 1; i <= 3; i++) {
@@ -1421,8 +1438,10 @@ function resetPageSection(prefix) {
     slot.querySelector('.uz-input').value = '';
   });
   // Rebuild shop + catalogue editors with defaults
-  const meta = PAGE_META.find(m =>m.id === prefix);
+  const meta = PAGE_META.find(m => m.id === prefix);
   initShopEditor(prefix, meta);
+  document.getElementById(prefix + '-cards-editor')
+    ?.querySelectorAll('.upload-slot').forEach(s => initOneUploadSlot(s));
   initCatEditor(prefix);
   loadAllFields();
   toast(`Page "${prefix}" réinitialisée.`, 'success');

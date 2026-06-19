@@ -57,19 +57,19 @@
       if (grid) {
         grid.innerHTML = '';
         for (let n = 1; n <= shopCount; n++) {
-          const icon = d[p+'_c'+n+'_icon'] || '';
-          const name = d[p+'_c'+n+'_name'] || '';
-          const desc = d[p+'_c'+n+'_desc'] || '';
+          const name  = d[p+'_c'+n+'_name']  || '';
+          const desc  = d[p+'_c'+n+'_desc']  || '';
           const price = d[p+'_c'+n+'_price'] || '';
-          const btn = d[p+'_c'+n+'_btn'] || 'Demander un devis';
-          if (!name && !icon) continue;
+          const btn   = d[p+'_c'+n+'_btn']   || 'Demander un devis';
+          if (!name) continue;
+          const imgSrc = localStorage.getItem(IMG_PFX + p + '_shop_' + n);
           const card = document.createElement('div');
           card.className = 'shop-card reveal';
-          card.innerHTML = '<div class="shop-card-icon">'+icon+'</div>'
+          card.innerHTML = (imgSrc ? '<div class="shop-card-img"><img src="'+imgSrc+'" alt="'+name+'"></div>' : '')
             + '<div class="shop-card-name">'+name+'</div>'
             + '<div class="shop-card-desc">'+desc+'</div>'
             + '<span class="shop-card-price'+(price?'':' devis')+'">'+(price||'Sur devis')+'</span>'
-            + '<a href="index.html#contact" class="btn-sm">'+btn+'</a>';
+            + '<a href="#contact" class="btn-sm">'+btn+'</a>';
           grid.appendChild(card);
         }
       }
