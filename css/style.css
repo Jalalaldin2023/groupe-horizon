@@ -416,6 +416,16 @@ img { max-width: 100%; }
 .cat-price { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: .92rem; color: var(--or-fonce); }
 .cat-body .btn-sm { align-self: flex-start; margin-top: .3rem; }
 
+/* ===== Visite virtuelle 3D ===== */
+.visite3d-section { background: linear-gradient(135deg, var(--bleu-fonce) 0%, #0a1628 100%); color: #fff; }
+.visite3d-section .section-tag { color: var(--or); }
+.visite3d-section .visite3d-title { color: #fff; }
+.visite3d-desc { color: rgba(255,255,255,.75); max-width: 680px; margin: 0 auto 2.4rem; text-align: center; line-height: 1.7; font-size: .97rem; }
+.visite3d-embed { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 48px rgba(0,0,0,.45); margin-top: 2rem; }
+.visite3d-iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background: #0a1628; }
+.visite3d-section .section-title { text-align: center; }
+.visite3d-section .section-tag { display: block; text-align: center; }
+
 .contact-cta {
   background: var(--bleu-fonce);
   text-align: center;

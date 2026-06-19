@@ -874,6 +874,7 @@ function buildPagePanel(m) {
     { key:'entete',    label:'En-tête' },
     { key:'boutique',  label:'Boutique' },
     { key:'catalogue', label:'Catalogue' },
+    { key:'visite3d',  label:'Visite 3D' },
     { key:'pres',      label:'Présentation' },
     { key:'galerie',   label:'Galerie' },
     { key:'actu',      label:'Actualités' },
@@ -956,6 +957,22 @@ function buildPagePanel(m) {
           <div class="add-card-row">
             <button class="btn-add-card" onclick="addCatItem('${p}')">＋ Ajouter un article</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISITE 3D -->
+    <div id="${p}-visite3d" class="tab-pane">
+      <div class="form-section">
+        <div class="section-head"><span></span><span class="section-head-title">Visite virtuelle guidée 3D</span></div>
+        <div class="section-body">
+          <div class="info-box">Collez l'URL d'intégration (embed) de votre visite 3D : Matterport, Google Street View, Kuula, YouTube 360, etc. La section s'affiche uniquement si une URL est renseignée.</div>
+          <div class="fg row2">
+            <div><label>Tag de section</label><input class="fi" id="${p}_v3d_tag" placeholder="Visite virtuelle"></div>
+            <div><label>Titre (h2)</label><input class="fi" id="${p}_v3d_h2" placeholder="Découvrez nos locaux en 3D"></div>
+          </div>
+          <div class="fg"><label>Description</label><textarea class="fi" id="${p}_v3d_desc" placeholder="Explorez nos installations depuis chez vous grâce à notre visite virtuelle interactive en 3D."></textarea></div>
+          <div class="fg"><label>URL d'intégration (iframe src)</label><input class="fi" id="${p}_v3d_url" placeholder="https://my.matterport.com/show/?m=..."></div>
         </div>
       </div>
     </div>

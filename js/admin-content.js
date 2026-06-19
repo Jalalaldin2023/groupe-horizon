@@ -118,6 +118,9 @@
     /* Catalogue */
     applyCatalogue(p);
 
+    /* Visite 3D */
+    applyVisite3D(p);
+
     /* CTA */
     setText('.contact-cta h2', d[p+'_cta_h2']);
     setNth ('.contact-cta p',0, d[p+'_cta_p']);
@@ -157,6 +160,22 @@
         + '</div>';
       grid.appendChild(item);
     }
+  }
+
+  /* ─── VISITE 3D ─── */
+  function applyVisite3D(p) {
+    const url = d[p+'_v3d_url'];
+    const section = document.querySelector('.visite3d-section');
+    if (!section || !url) return;
+    section.style.display = '';
+    const tag = section.querySelector('.visite3d-tag');
+    const title = section.querySelector('.visite3d-title');
+    const desc  = section.querySelector('.visite3d-desc');
+    const iframe = section.querySelector('.visite3d-iframe');
+    if (tag   && d[p+'_v3d_tag'])  tag.textContent   = d[p+'_v3d_tag'];
+    if (title && d[p+'_v3d_h2'])   title.textContent  = d[p+'_v3d_h2'];
+    if (desc  && d[p+'_v3d_desc']) desc.textContent   = d[p+'_v3d_desc'];
+    if (iframe) iframe.src = url;
   }
 
   /* ─── IMAGES GALERIE ─── */
